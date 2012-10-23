@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3E2D69A3-6E8F-4B6F-8489-9CA052D6E009}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AutoBot</RootNamespace>
+    <AssemblyName>autobot.core</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="SevenZipLib">
+      <HintPath>..\..\References\SevenZip\SevenZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Sugar">
+      <HintPath>..\..\References\Sugar\Sugar.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Core\Connection.cs" />
+    <Compile Include="Core\Context.cs" />
+    <Compile Include="Core\MessageParser.cs" />
+    <Compile Include="Core\MessageParserLinks\PrivateMessageLink.cs" />
+    <Compile Include="Core\MessageParserLinks\PingLink.cs" />
+    <Compile Include="Core\Stencil.cs" />
+    <Compile Include="Handlers\Aliases\AddAlias.cs" />
+    <Compile Include="Handlers\Aliases\ListAlias.cs" />
+    <Compile Include="Handlers\Aliases\RemoveAlias.cs" />
+    <Compile Include="Handlers\System\Cpu.cs" />
+    <Compile Include="Handlers\System\Exec.cs" />
+    <Compile Include="Handlers\System\Processes.cs" />
+    <Compile Include="Handlers\System\Recycle.cs" />
+    <Compile Include="Handlers\System\Update.cs" />
+    <Compile Include="Handlers\System\Version.cs" />
+    <Compile Include="Handlers\System\Exit.cs" />
+    <Compile Include="Handlers\System\Echo.cs" />
+    <Compile Include="Handlers\Nicknames\AddNickname.cs" />
+    <Compile Include="Handlers\Nicknames\ListNicknames.cs" />
+    <Compile Include="Handlers\Nicknames\RemoveNickname.cs" />
+    <Compile Include="Handlers\Rooms\LeaveRoom.cs" />
+    <Compile Include="Handlers\Rooms\JoinRoom.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AliasService.cs" />
+    <Compile Include="Services\ConfigService.cs" />
+    <Compile Include="Services\CredentialService.cs" />
+    <Compile Include="Services\HandlerService.cs" />
+    <Compile Include="Services\ChatService.cs" />
+    <Compile Include="Services\NicknameService.cs" />
+    <Compile Include="Services\ChannelService.cs" />
+    <Compile Include="Services\UpdateService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AutoBot.Interfaces\AutoBot.Interfaces.csproj">
+      <Project>{9488fc79-afde-4a1b-83cb-a9304993edc5}</Project>
+      <Name>AutoBot.Interfaces</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
