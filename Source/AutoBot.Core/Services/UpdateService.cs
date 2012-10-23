@@ -68,7 +68,7 @@ namespace AutoBot.Services
                 var userDirectory = FileService.GetUserDataDirectory();
 
                 // Combine paths
-                result = Path.Combine(userDirectory, "hipbot", fileName);
+                result = Path.Combine(userDirectory, "autobot", fileName);
             }
             else
             {
@@ -198,7 +198,7 @@ namespace AutoBot.Services
 
             // Get HipBot config directory
             var directory = FileService.GetUserDataDirectory();
-            directory = Path.Combine(directory, "hipbot");
+            directory = Path.Combine(directory, "autobot");
 
             // Ensure target directory exists
             if (!Directory.Exists(directory))
@@ -206,7 +206,7 @@ namespace AutoBot.Services
                 Directory.CreateDirectory(directory);
             }
 
-            var files = Directory.GetFiles(directory, "hipbot.exe", SearchOption.AllDirectories);
+            var files = Directory.GetFiles(directory, "autobot.exe", SearchOption.AllDirectories);
 
             var latestVersion = string.Empty;
             var latestBuildDate = new DateTime(2000, 1, 1);
