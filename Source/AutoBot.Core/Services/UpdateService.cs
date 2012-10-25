@@ -4,6 +4,7 @@ using System.IO;
 using System.Threading;
 using SevenZipLib;
 using Sugar;
+using Sugar.Command;
 using Sugar.IO;
 using Sugar.Net;
 
@@ -239,7 +240,12 @@ namespace AutoBot.Services
 
             Thread.Sleep(1000);
 
-            var info = new ProcessStartInfo { FileName = latestVersion, UseShellExecute = false };
+            var info = new ProcessStartInfo
+            {
+                FileName = latestVersion, 
+                UseShellExecute = false,
+                Arguments = Parameters.Current.ToString()
+            };
 
             var process = Process.Start(info);
 
