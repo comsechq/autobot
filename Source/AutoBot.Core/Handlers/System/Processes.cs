@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
+using System.Threading;
 using AutoBot.Domain;
 using AutoBot.Services;
 using Sugar.Command;
@@ -17,7 +17,11 @@ namespace AutoBot.Handlers.System
     public class Processes : Handler<Processes.Options>
     {
         [Flag("ps")]
-        public class Options {}
+        public class Options
+        {
+            [Parameter("ps", Required = false, Default = "")]
+            public string Filter { get; set; }
+        }
 
         private class ProcessInfo
         {
@@ -43,7 +47,6 @@ namespace AutoBot.Handlers.System
         /// <param name="options">The options.</param>
         public override void Receive(Message message, Options options)
         {
-            var sb = new StringBuilder();
             var now = DateTime.Now;
             var infos = new List<ProcessInfo>();
 
@@ -67,14 +70,17 @@ namespace AutoBot.Handlers.System
                 infos.Add(info);
             }
 
+            var filter = options.Filter ?? string.Empty;
+
             foreach (var info in infos.OrderByDescending(i => i.StartTime))
             {
-                sb.AppendFormat("{0:HH:mm:ss} {1:HH:mm:ss} {2}", info.StartTime, info.ActiveTime, info.Name);
+                if (info.Name.IndexOf(filter, StringComparison.InvariantCultureIgnoreCase) > -1)
+                {
+                    ChatService.Reply(message, "{0:HH:mm:ss} {1:HH:mm:ss} {2}", info.StartTime, info.ActiveTime, info.Name);
 
-                sb.AppendLine(string.Empty);
+                    Thread.Sleep(100);
+                }
             }
-
-            ChatService.Reply(message, sb.ToString(), true);
         }
     }
 }

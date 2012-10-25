@@ -61,7 +61,8 @@
     <Compile Include="Handlers\System\Exec.cs" />
     <Compile Include="Handlers\System\Processes.cs" />
     <Compile Include="Handlers\System\Recycle.cs" />
-    <Compile Include="Handlers\System\Update.cs" />
+    <Compile Include="Handlers\Update\SetUpdateUrl.cs" />
+    <Compile Include="Handlers\Update\UpdateNow.cs" />
     <Compile Include="Handlers\System\Version.cs" />
     <Compile Include="Handlers\System\Exit.cs" />
     <Compile Include="Handlers\System\Echo.cs" />

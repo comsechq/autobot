@@ -3,15 +3,15 @@ using AutoBot.Domain;
 using AutoBot.Services;
 using Sugar.Command;
 
-namespace AutoBot.Handlers.System
+namespace AutoBot.Handlers.Update
 {
     /// <summary>
-    /// Displays the current processes running
+    /// Updates the current bot
     /// </summary>
     [Export(typeof(IHandler))]
-    public class Update : Handler<Update.Options>
+    public class UpdateNow : Handler<UpdateNow.Options>
     {
-        [Flag("update")]
+        [Flag("update", "now")]
         public class Options {}
 
         /// <summary>

@@ -42,6 +42,23 @@ namespace AutoBot.Services
 
         #endregion
 
+        public string GetUpdateUrl()
+        {
+            // This can be overridden in the config file
+            const string defaultUrl = "https://raw.github.com/comsechq/autobot/master/version.txt";
+
+            return ConfigService.GetValue("Update", "Url", defaultUrl);
+        }
+
+        /// <summary>
+        /// Sets the update URL to the given value.
+        /// </summary>
+        /// <param name="url">The URL.</param>
+        public void SetUpdateUrl(string url)
+        {
+            ConfigService.SetValue("Update", "Url", url);
+        }
+
         /// <summary>
         /// Gets the version directory from URL.
         /// </summary>
@@ -102,16 +119,9 @@ namespace AutoBot.Services
         /// <returns></returns>
         private string GetLatestVersionUrl()
         {
-            // This can be overridden in the config file
-            const string defaultUrl = "https://raw.github.com/comsechq/autobot/master/version.txt";
-
             var url = string.Empty;
 
-            var config = ConfigService.GetConfig();
-
-            var updateUrl = config.GetValue("Update", "Url", defaultUrl);
-
-            var response = HttpService.Get(updateUrl);
+            var response = HttpService.Get(GetUpdateUrl());
 
             if (response.Success)
             {

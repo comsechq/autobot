@@ -43,6 +43,37 @@ namespace AutoBot.Services
             config.Write(GetConfigurationFilename());
         }
 
+        /// <summary>
+        /// Gets the value from the given key in the configuration.
+        /// </summary>
+        /// <param name="section">The section.</param>
+        /// <param name="key">The key.</param>
+        /// <param name="default">The default.</param>
+        /// <returns></returns>
+        /// <exception cref="System.NotImplementedException"></exception>
+        public string GetValue(string section, string key, string @default)
+        {
+            var config = GetConfig();
+
+            return config.GetValue(section, key, @default);
+        }
+
+        /// <summary>
+        /// Sets the value with the given key in the configuration.
+        /// </summary>
+        /// <param name="section">The section.</param>
+        /// <param name="key">The key.</param>
+        /// <param name="value">The value.</param>
+        /// <exception cref="System.NotImplementedException"></exception>
+        public void SetValue(string section, string key, object value)
+        {
+            var config = GetConfig();
+
+            config.SetValue(section, key, value.ToString());
+
+            SetConfig(config);
+        }
+
         private string GetConfigurationFilename()
         {
             // Configuration file in user directory
