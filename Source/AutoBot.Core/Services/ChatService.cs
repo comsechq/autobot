@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Threading;
 using AutoBot.Core;
 using AutoBot.Domain;
 using AutoBot.Events;
@@ -79,6 +80,9 @@ namespace AutoBot.Services
 
                 // Fire event
                 OnMessage(this, new MessageEventArgs { Message = message });
+
+                // Don't consume CPU
+                Thread.Sleep(1000);
             }
         }
   
