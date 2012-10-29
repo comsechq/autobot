@@ -46,7 +46,7 @@ namespace AutoBot
             }
 
             // Relaunch bot
-            if (Arguments.Contains("-launch"))
+            if (Arguments.Contains("launch"))
             {
                 Console.WriteLine("Launching AutoBot...");
 

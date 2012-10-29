@@ -44,9 +44,13 @@
     	  <!-- Save for later -->
         <zip zipfile="${artifacts.dir}\AutoBot.${git.revision}.zip">
     		<fileset basedir="${deploy.dir}">
-    			<include name="**/*.dll" />
-    			<include name="**/*.exe" />
+    			<include name="*.dll" />
+    			<include name="*.exe" />
     		</fileset>
+            <fileset basedir="${update.dir}" prefix="update">
+                <include name="*.dll" />
+                <include name="*.exe" />
+            </fileset>
     	</zip>
 
         <!-- Write latest version -->

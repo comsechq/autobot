@@ -62,7 +62,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IUpdateService.cs" />
+    <Compile Include="Services\IZipService.cs" />
     <Compile Include="Services\UpdateService.cs" />
+    <Compile Include="Services\ZipZervice.cs" />
     <Compile Include="UpdateConsole.cs" />
   </ItemGroup>
   <ItemGroup>

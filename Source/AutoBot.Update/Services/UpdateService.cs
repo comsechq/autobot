@@ -40,6 +40,14 @@ namespace AutoBot.Services
         /// </value>
         public IConfigService ConfigService { get; set; }
 
+        /// <summary>
+        /// Gets or sets the zip service.
+        /// </summary>
+        /// <value>
+        /// The zip service.
+        /// </value>
+        public IZipService ZipService { get; set; }
+
         #endregion
 
         public string GetUpdateUrl()
@@ -161,51 +169,14 @@ namespace AutoBot.Services
 
                 File.WriteAllBytes(fileName, response.Bytes);
 
-                UncompressFile(fileName);
+                ZipService.DecompressFile(fileName);
 
                 ConfigService.SetValue("Update", "Current", url);
             }
 
             return path;
         }
-
-        private void UncompressFile(string archiveFilename)
-        {
-            if (!File.Exists(archiveFilename))
-            {
-                Console.WriteLine("Can't Decompress: {0}", archiveFilename);
-            }
-
-            Console.WriteLine("Decompressing: {0}", archiveFilename);
-
-            var path = Path.GetDirectoryName(archiveFilename) ?? string.Empty;
-
-            using (var archive = new SevenZipArchive(archiveFilename))
-            {
-                foreach (var entry in archive)
-                {
-                    if (entry.IsDirectory) continue;
-
-                    var filename = entry.FileName.SubstringAfterChar("\\");
-
-                    Console.WriteLine("Extracting File: {0}", filename);
-
-                    var filePath = Path.Combine(path, filename);
-
-                    using (var stream = File.Create(filePath))
-                    {
-                        entry.Extract(stream, ExtractOptions.OverwriteExistingFiles);
-
-                        stream.Flush();
-
-                        stream.Close();
-                    }
-                }
-            }
-
-            File.Delete(archiveFilename);
-        }
-
+       
         /// <summary>
         /// Gets the install directory.
         /// </summary>
@@ -226,9 +197,7 @@ namespace AutoBot.Services
         /// <exception cref="System.NotImplementedException"></exception>
         public void RemoveCurrentVersion()
         {
-            var files = new[] { "autobot.core.dll", "autobot.exe", "autobot.handlers.dll", "autobot.interfaces.dll", "Sugar.dll"};
-
-            FileService.Delete(InstallDirectory, files);
+            FileService.Delete(InstallDirectory, false);
         }
 
         /// <summary>
@@ -246,7 +215,7 @@ namespace AutoBot.Services
         /// <param name="path">The path.</param>
         public void RemoveUpdate(string path)
         {
-            FileService.Delete(path);
+            FileService.Delete(path, true);
         }
 
         /// <summary>
