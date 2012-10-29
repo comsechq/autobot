@@ -37,8 +37,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\References\SevenZip\SevenZipLib.dll</HintPath>
     </Reference>
-    <Reference Include="Sugar">
-      <HintPath>..\AutoBot\bin\Debug\Sugar.dll</HintPath>
+    <Reference Include="Sugar, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\References\Sugar\Sugar.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
