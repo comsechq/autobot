@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.Composition;
+using System.IO;
 using AutoBot.Domain;
 using AutoBot.Services;
 using Sugar.Command;
@@ -29,7 +30,9 @@ namespace AutoBot.Handlers.Update
         /// <param name="options">The options.</param>
         public override void Receive(Message message, Options options)
         {
-            
+            var updateFileName = Path.Combine(Parameters.Directory, "Update", "update.exe");
+
+
         }
     }
 }

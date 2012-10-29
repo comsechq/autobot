@@ -25,6 +25,14 @@ namespace AutoBot.Handlers.Update
         public IChatService ChatService { get; set; }
 
         /// <summary>
+        /// Gets or sets the config service.
+        /// </summary>
+        /// <value>
+        /// The config service.
+        /// </value>
+        public IConfigService ConfigService { get; set; }
+
+        /// <summary>
         /// Receives the specified message.
         /// </summary>
         /// <param name="message">The message.</param>
@@ -33,15 +41,15 @@ namespace AutoBot.Handlers.Update
         {
             if (!string.IsNullOrEmpty(options.Url))
             {
-                //UpdateService.SetUpdateUrl(options.Url);
+                ConfigService.SetValue("Update", "Url", options.Url);
 
                 ChatService.Reply(message, "Update URL set.");
             }
             else
             {
-                //var url = UpdateService.GetUpdateUrl();
+                var url = ConfigService.GetValue("Update", "Url", string.Empty);
 
-                //ChatService.Reply(message, "Updating from URL: {0}", url);
+                ChatService.Reply(message, "Updating from URL: {0}", url);
             }
         }
     }
