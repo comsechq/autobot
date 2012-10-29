@@ -3,6 +3,7 @@
 	<target name="Deploy">
 
         <property name="return.code" value="0" />
+        <property name="update.dir" value="${deploy.dir}\Update" />
 
         <!-- Stop any existing instances -->
         <exec program="taskkill" failonerror="false" resultproperty="return.code">
@@ -18,6 +19,7 @@
 
         <!-- Create Console Directory -->
         <mkdir dir="${deploy.dir}" if="${not directory::exists(deploy.dir)}"  />
+        <mkdir dir="${update.dir}" if="${not directory::exists(update.dir)}"  />
 
         <!-- Copy binaries to console directory -->
         <copy todir="${deploy.dir}">
@@ -28,6 +30,12 @@
         </copy>
         <copy todir="${deploy.dir}">
           <fileset basedir="${root.dir}\Source\AutoBot.Handlers\bin\Release">
+            <include name="**/*.dll" />
+            <include name="**/*.exe" />
+          </fileset>
+        </copy>
+        <copy todir="${update.dir}">
+          <fileset basedir="${root.dir}\Source\AutoBot.Update\bin\Release">
             <include name="**/*.dll" />
             <include name="**/*.exe" />
           </fileset>

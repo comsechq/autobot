@@ -35,13 +35,17 @@
         /// <summary>
         /// Downloads the latest version of the bot from the Update server.
         /// </summary>
-        void DownloadUpdate();
+        string DownloadUpdate();
 
         /// <summary>
-        /// Runs the latest version of the bot.
+        /// Removes the current version of the Bot.
         /// </summary>
-        /// <param name="waitForExit">if set to <c>true</c> wait for the child process to exit.</param>
-        /// <param name="allowThisInstance">if set to <c>true</c> allow this instance to be run again.</param>
-        void RunLatestVersion(bool waitForExit, bool allowThisInstance);
+        void RemoveCurrentVersion();
+
+        void CopyUpdate(string path);
+
+        void RemoveUpdate(string path);
+
+        void LaunchBot();
     }
 }

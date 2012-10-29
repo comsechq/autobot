@@ -1,6 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Net.Security;
+﻿using System.Net.Security;
 using System.Net.Sockets;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
@@ -16,6 +14,14 @@ namespace AutoBot.Core
         private SslStream network;
         private StreamReader receive;
         private StreamWriter send;
+
+        /// <summary>
+        /// Gets or sets the console.
+        /// </summary>
+        /// <value>
+        /// The console.
+        /// </value>
+        public IConsole Console { get; set; }
 
         /// <summary>
         /// Connects the specified server.
@@ -57,7 +63,7 @@ namespace AutoBot.Core
         /// <param name="data">The data.</param>
         public void Send(string data)
         {
-            Console.WriteLine("<< " + data);
+            System.Console.WriteLine("<< " + data);
 
             send.WriteLine(data);
             send.Flush();

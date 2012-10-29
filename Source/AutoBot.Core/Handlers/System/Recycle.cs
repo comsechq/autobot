@@ -23,15 +23,7 @@ namespace AutoBot.Handlers.System
         /// The chat service.
         /// </value>
         public IChatService ChatService { get; set; }
-
-        /// <summary>
-        /// Gets or sets the update service.
-        /// </summary>
-        /// <value>
-        /// The update service.
-        /// </value>
-        public IUpdateService UpdateService { get; set; }
-
+        
         #endregion
 
         /// <summary>
@@ -42,8 +34,6 @@ namespace AutoBot.Handlers.System
         public override void Receive(Message message, Options options)
         {
             ChatService.Reply(message, "Recycling bot.");
-
-            UpdateService.RunLatestVersion(false, true);
         }
     }
 }

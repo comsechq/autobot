@@ -32,9 +32,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="SevenZipLib">
-      <HintPath>..\..\References\SevenZip\SevenZipLib.dll</HintPath>
-    </Reference>
     <Reference Include="Sugar">
       <HintPath>..\..\References\Sugar\Sugar.dll</HintPath>
     </Reference>
@@ -49,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Connection.cs" />
+    <Compile Include="Core\Console.cs" />
     <Compile Include="Core\Context.cs" />
     <Compile Include="Core\MessageParser.cs" />
     <Compile Include="Core\MessageParserLinks\PrivateMessageLink.cs" />
@@ -79,7 +77,6 @@
     <Compile Include="Services\ChatService.cs" />
     <Compile Include="Services\NicknameService.cs" />
     <Compile Include="Services\ChannelService.cs" />
-    <Compile Include="Services\UpdateService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AutoBot.Interfaces\AutoBot.Interfaces.csproj">

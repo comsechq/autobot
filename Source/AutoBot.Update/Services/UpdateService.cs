@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Threading;
 using SevenZipLib;
 using Sugar;
 using Sugar.Command;
@@ -104,13 +103,24 @@ namespace AutoBot.Services
         /// </returns>
         public bool IsNewVersionAvailable()
         {
-            var config = ConfigService.GetConfig();
+            Console.WriteLine("Checking for new AutoBot Version...");
 
-            var current = config.GetValue("Update", "Current", string.Empty);
+            var current = ConfigService.GetValue("Update", "Current", string.Empty);
             var latest = GetLatestVersionUrl();
 
             // New version available?
-            return current != latest;
+            var newVersionAvailable = current != latest;
+
+            if (newVersionAvailable)
+            {
+                Console.WriteLine("New Version Available.");
+            }
+            else
+            {
+                Console.WriteLine("AutoBot is up to date.");
+            }
+
+            return newVersionAvailable;
         }
 
         /// <summary>
@@ -135,18 +145,16 @@ namespace AutoBot.Services
         /// <summary>
         /// Downloads the latest version of the bot from the Update server.
         /// </summary>
-        public void DownloadUpdate()
+        public string DownloadUpdate()
         {
-            var config = ConfigService.GetConfig();
-
             var url = GetLatestVersionUrl();
 
             var response = HttpService.Get(url);
 
+            var path = GetVersionDirectoryFromUrl(url);
+
             if (response.Success)
             {
-                var path = GetVersionDirectoryFromUrl(url);
-
                 var fileName = Path.Combine(path, Path.GetFileName(url) ?? "update.zip");
 
                 if (!Directory.Exists(path)) Directory.CreateDirectory(path);
@@ -155,14 +163,11 @@ namespace AutoBot.Services
 
                 UncompressFile(fileName);
 
-                config.SetValue("Update", "Current", url);
-
-                ConfigService.SetConfig(config);
+                ConfigService.SetValue("Update", "Current", url);
             }
 
+            return path;
         }
-
-
 
         private void UncompressFile(string archiveFilename)
         {
@@ -197,61 +202,74 @@ namespace AutoBot.Services
                     }
                 }
             }
+
+            File.Delete(archiveFilename);
         }
 
         /// <summary>
-        /// Runs the latest version of the bot.
+        /// Gets the install directory.
         /// </summary>
-        public void RunLatestVersion(bool waitForExit, bool allowThisInstance)
+        /// <value>
+        /// The install directory.
+        /// </value>
+        public string InstallDirectory
         {
-            // Don't run latest version if debugging
-            if (Debugger.IsAttached) return;
-
-            // Get HipBot config directory
-            var directory = FileService.GetUserDataDirectory();
-            directory = Path.Combine(directory, "autobot");
-
-            // Ensure target directory exists
-            if (!Directory.Exists(directory))
+            get
             {
-                Directory.CreateDirectory(directory);
+                return Parameters.Directory + "\\..";               
             }
+        }
 
-            var files = Directory.GetFiles(directory, "autobot.exe", SearchOption.AllDirectories);
+        /// <summary>
+        /// Removes the current version of the Bot.
+        /// </summary>
+        /// <exception cref="System.NotImplementedException"></exception>
+        public void RemoveCurrentVersion()
+        {
+            var files = new[] { "autobot.core.dll", "autobot.exe", "autobot.handlers.dll", "autobot.interfaces.dll", "Sugar.dll"};
 
-            var latestVersion = string.Empty;
-            var latestBuildDate = new DateTime(2000, 1, 1);
+            FileService.Delete(InstallDirectory, files);
+        }
 
-            foreach (var file in files)
-            {
-                if (File.GetLastWriteTime(file) > latestBuildDate)
-                {
-                    latestVersion = file;
-                    latestBuildDate = File.GetLastWriteTime(file);
-                }
-            }
+        /// <summary>
+        /// Copies the update to the installation directory.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        public void CopyUpdate(string path)
+        {
+            FileService.Copy(path, InstallDirectory);
+        }
 
-            if (string.IsNullOrWhiteSpace(latestVersion)) return;
+        /// <summary>
+        /// Removes the update.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        public void RemoveUpdate(string path)
+        {
+            FileService.Delete(path);
+        }
 
-            if (!allowThisInstance)
-            {
-                if (Process.GetCurrentProcess().MainModule.FileName == latestVersion) return;
-            }
+        /// <summary>
+        /// Launches the bot.
+        /// </summary>
+        public void LaunchBot()
+        {
+            var basePath = InstallDirectory;
 
-            Thread.Sleep(1000);
+            var botFilename = Path.Combine(basePath, "autobot.exe");
+
+            var paramters = Parameters.Current;
 
             var info = new ProcessStartInfo
             {
-                FileName = latestVersion, 
+                FileName = botFilename,
                 UseShellExecute = false,
-                Arguments = Parameters.Current.ToString()
+                Arguments = paramters.ToString()
             };
 
-            var process = Process.Start(info);
-
-            if (waitForExit) process.WaitForExit();
+            Process.Start(info);
 
             Environment.Exit(0);
-        }
+        }        
     }
 }

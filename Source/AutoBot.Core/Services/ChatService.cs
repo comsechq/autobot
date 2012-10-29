@@ -23,6 +23,14 @@ namespace AutoBot.Services
         public IMessageParser MessageParser { get; set; }
 
         /// <summary>
+        /// Gets or sets the console.
+        /// </summary>
+        /// <value>
+        /// The console.
+        /// </value>
+        public IConsole Console { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ChatService"/> class.
         /// </summary>
         public ChatService()
@@ -80,9 +88,6 @@ namespace AutoBot.Services
 
                 // Fire event
                 OnMessage(this, new MessageEventArgs { Message = message });
-
-                // Don't consume CPU
-                Thread.Sleep(1000);
             }
         }
   

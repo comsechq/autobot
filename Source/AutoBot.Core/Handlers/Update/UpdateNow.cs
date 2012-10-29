@@ -23,32 +23,13 @@ namespace AutoBot.Handlers.Update
         public IChatService ChatService { get; set; }
 
         /// <summary>
-        /// Gets or sets the update service.
-        /// </summary>
-        /// <value>
-        /// The update service.
-        /// </value>
-        public IUpdateService UpdateService { get; set; }
-
-        /// <summary>
         /// Receives the specified message.
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="options">The options.</param>
         public override void Receive(Message message, Options options)
         {
-            if (!UpdateService.IsNewVersionAvailable())
-            {
-                ChatService.Reply(message, "No new version is available.");
-            }
-            else
-            {
-                ChatService.Reply(message, "Downloading new version of bot...");
-
-                UpdateService.DownloadUpdate();
-
-                ChatService.Reply(message, "New version downloaded.  Recycle me to upgrade.");                
-            }
+            
         }
     }
 }

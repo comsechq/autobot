@@ -62,7 +62,7 @@ namespace AutoBot
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Unable to load plugins: {0}", ex.Message);
+                System.Console.WriteLine("Unable to load plugins: {0}", ex.Message);
             }
 
         }
@@ -89,8 +89,8 @@ namespace AutoBot
                 }
             }
             catch (Exception ex)
-            {              
-                Console.WriteLine(ex.Message);
+            {
+                System.Console.WriteLine(ex.Message);
             }
         }
 
@@ -136,10 +136,6 @@ namespace AutoBot
             // Initilize handler service
             handlerService = Stencil.Instance.Resolve<IHandlerService>() as HandlerService;
 
-            // Run latest version
-            var service = Stencil.Instance.Resolve<UpdateService>();
-            service.RunLatestVersion(true, false);
-
             // Get Console
             var console = Stencil.Instance.Resolve<AutoBotConsole>();
 
@@ -166,28 +162,28 @@ namespace AutoBot
 
         void watcher_Renamed(object sender, RenamedEventArgs e)
         {
-            Console.WriteLine("Plugins Renamed");
+            System.Console.WriteLine("Plugins Renamed");
 
             directoryCatalog.Refresh();
         }
 
         void watcher_Deleted(object sender, FileSystemEventArgs e)
         {
-            Console.WriteLine("Plugins Deleted");
+            System.Console.WriteLine("Plugins Deleted");
 
             directoryCatalog.Refresh();
         }
 
         void watcher_Created(object sender, FileSystemEventArgs e)
         {
-            Console.WriteLine("Plugins Created");
+            System.Console.WriteLine("Plugins Created");
 
             directoryCatalog.Refresh();
         }
 
         void watcher_Changed(object sender, FileSystemEventArgs e)
         {
-            Console.WriteLine("Plugins Changed");
+            System.Console.WriteLine("Plugins Changed");
 
             directoryCatalog.Refresh();
         }

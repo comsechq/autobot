@@ -60,6 +60,14 @@ namespace AutoBot.Handlers.System
         /// </value>
         public IChatService ChatService { get; set; }
 
+        /// <summary>
+        /// Gets or sets the console.
+        /// </summary>
+        /// <value>
+        /// The console.
+        /// </value>
+        public IConsole Console { get; set; }
+
         #endregion
 
         /// <summary>
