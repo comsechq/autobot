@@ -17,9 +17,17 @@
             <sleep seconds="5" />
         </if>
 
+
         <!-- Create Console Directory -->
         <mkdir dir="${deploy.dir}" if="${not directory::exists(deploy.dir)}"  />
         <mkdir dir="${update.dir}" if="${not directory::exists(update.dir)}"  />
+
+        <!-- Remove Previous Version -->
+        <delete>
+            <fileset basedir="${deploy.dir}\">
+              <include name="**\*" />
+            </fileset>
+        </delete>
 
         <!-- Copy binaries to console directory -->
         <copy todir="${deploy.dir}">

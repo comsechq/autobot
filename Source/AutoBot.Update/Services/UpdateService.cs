@@ -171,6 +171,8 @@ namespace AutoBot.Services
 
                 ZipService.DecompressFile(fileName);
 
+                File.Delete(fileName);
+
                 ConfigService.SetValue("Update", "Current", url);
             }
 
