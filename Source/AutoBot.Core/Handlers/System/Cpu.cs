@@ -15,6 +15,7 @@ namespace AutoBot.Handlers.System
     [Export(typeof(IHandler))]
     public class Cpu : Handler<Cpu.Options>
     {
+        [Flag("cpu")]
         public class Options
         {
             /// <summary>
