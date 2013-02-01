@@ -68,9 +68,10 @@ namespace AutoBot.Services
             }
 
             // Check for aliases
-            if (AliasService.IsAlias(message.Body))
+            var command = message.Body.SubstringBeforeChar(" ");
+            if (AliasService.IsAlias(command))
             {
-                message.Body = AliasService.GetAlias(message.Body);
+                message.Body = AliasService.GetAlias(command) + " " + message.Body.SubstringAfterChar(" ");
             }
 
             // Remove Alias bypass

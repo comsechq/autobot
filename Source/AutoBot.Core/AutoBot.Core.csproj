@@ -55,6 +55,8 @@
     <Compile Include="Handlers\Aliases\AddAlias.cs" />
     <Compile Include="Handlers\Aliases\ListAlias.cs" />
     <Compile Include="Handlers\Aliases\RemoveAlias.cs" />
+    <Compile Include="Handlers\System\Tail.cs" />
+    <Compile Include="Handlers\System\Dir.cs" />
     <Compile Include="Handlers\System\Cpu.cs" />
     <Compile Include="Handlers\System\Exec.cs" />
     <Compile Include="Handlers\System\Processes.cs" />
