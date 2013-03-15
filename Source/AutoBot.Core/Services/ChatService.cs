@@ -126,7 +126,7 @@ namespace AutoBot.Services
         /// <summary>
         /// Joins the specified channel.
         /// </summary>
-        /// <param name="channel">The room.</param>
+        /// <param name="channel">The channel.</param>
         /// <returns></returns>
         public bool Join(string channel)
         {
@@ -138,7 +138,7 @@ namespace AutoBot.Services
         /// <summary>
         /// Leaves the specified channel.
         /// </summary>
-        /// <param name="channel">The room.</param>
+        /// <param name="channel">The channel.</param>
         public bool Leave(string channel)
         {
             Send("PART #{0}", channel);
@@ -147,7 +147,7 @@ namespace AutoBot.Services
         }
 
         /// <summary>
-        /// Says the message in the specified room.
+        /// Says the message in the specified channel.
         /// </summary>
         /// <param name="message">The message.</param>
         public void Send(string message)
@@ -156,7 +156,7 @@ namespace AutoBot.Services
         }
 
         /// <summary>
-        /// Says the message in the specified room.
+        /// Says the message in the specified channel.
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="args">The args.</param>

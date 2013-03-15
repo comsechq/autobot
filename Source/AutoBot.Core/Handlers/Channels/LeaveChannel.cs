@@ -2,14 +2,14 @@
 using AutoBot.Services;
 using Sugar.Command;
 
-namespace AutoBot.Handlers.Rooms
+namespace AutoBot.Handlers.Channels
 {
     /// <summary>
     /// Adds a nickname to this bot
     /// </summary>
-    public class LeaveRoom : Handler<LeaveRoom.Options>
+    public class LeaveChannel : Handler<LeaveChannel.Options>
     {
-        [Flag("room")]
+        [Flag("channel")]
         public class Options
         {
             /// <summary>
@@ -19,18 +19,18 @@ namespace AutoBot.Handlers.Rooms
             /// The name.
             /// </value>
             [Parameter("leave", Required = true)]
-            public string Room { get; set; }
+            public string Channel { get; set; }
         }
 
         #region Dependencies
 
         /// <summary>
-        /// Gets or sets the room service.
+        /// Gets or sets the channel service.
         /// </summary>
         /// <value>
-        /// The room service.
+        /// The channel service.
         /// </value>
-        public IRoomService RoomService { get; set; }
+        public IChannelService ChannelService { get; set; }
 
         /// <summary>
         /// Gets or sets the chat service.
@@ -49,9 +49,9 @@ namespace AutoBot.Handlers.Rooms
         /// <param name="options">The options.</param>
         public override void Receive(Message message, Options options)
         {
-            RoomService.Leave(options.Room);
+            ChannelService.Leave(options.Channel);
 
-            ChatService.Reply(message, "Leaving room '{0}'.", options.Room);
+            ChatService.Reply(message, "Leaving channel '{0}'.", options.Channel);
         }
     }
 }

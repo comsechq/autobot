@@ -8,7 +8,7 @@ namespace AutoBot.Domain
     public class Channel
     {
         /// <summary>
-        /// Gets or sets the room id.
+        /// Gets or sets the channel id.
         /// </summary>
         /// <value>
         /// The id.
@@ -64,7 +64,7 @@ namespace AutoBot.Domain
         public bool IsArchived { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this room is a one-on-one chat.
+        /// Gets or sets a value indicating whether this channel is a one-on-one chat.
         /// </summary>
         /// <value>
         ///   <c>true</c> if this instance is chat; otherwise, <c>false</c>.

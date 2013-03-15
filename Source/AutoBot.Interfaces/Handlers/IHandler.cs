@@ -17,7 +17,7 @@ namespace AutoBot.Handlers
         bool CanHandle(Message message);
 
         /// <summary>
-        /// Occurs when a message is received from the given room.
+        /// Occurs when a message is received from the given channel.
         /// </summary>
         /// <param name="message">The message.</param>
         void Receive(Message message);

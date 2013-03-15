@@ -23,12 +23,12 @@ namespace AutoBot
         public IChatService ChatService { get; set; }
 
         /// <summary>
-        /// Gets or sets the room service.
+        /// Gets or sets the channel service.
         /// </summary>
         /// <value>
-        /// The room service.
+        /// The channel service.
         /// </value>
-        public IRoomService RoomService { get; set; }
+        public IChannelService ChannelService { get; set; }
 
         /// <summary>
         /// Gets or sets the handler service.
@@ -85,7 +85,7 @@ namespace AutoBot
         {
             Thread.Sleep(4000);
 
-            RoomService.Reconnect();
+            ChannelService.Reconnect();
         }
 
         /// <summary>

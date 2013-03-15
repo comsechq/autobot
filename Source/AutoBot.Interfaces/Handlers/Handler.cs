@@ -29,7 +29,7 @@ namespace AutoBot.Handlers
         }
 
         /// <summary>
-        /// Occurs when a message is received from the given room.
+        /// Occurs when a message is received from the given channel.
         /// </summary>
         /// <param name="message">The message.</param>
         public void Receive(Message message)
@@ -43,7 +43,7 @@ namespace AutoBot.Handlers
         }
 
         /// <summary>
-        /// Occurs when a message is received from the given room.
+        /// Occurs when a message is received from the given channel.
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="options">The options.</param>

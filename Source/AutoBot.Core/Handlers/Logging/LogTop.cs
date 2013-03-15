@@ -2,35 +2,29 @@
 using AutoBot.Services;
 using Sugar.Command;
 
-namespace AutoBot.Handlers.Rooms
+namespace AutoBot.Handlers.Logging
 {
     /// <summary>
     /// Adds a nickname to this bot
     /// </summary>
-    public class JoinRoom : Handler<JoinRoom.Options>
+    public class TopLog : Handler<TopLog.Options>
     {
-        [Flag("room")]
+        [Flag("log")]
         public class Options
         {
-            /// <summary>
-            /// Gets or sets the name.
-            /// </summary>
-            /// <value>
-            /// The name.
-            /// </value>
-            [Parameter("join", Required = true)]
-            public string Room { get; set; }
+            [Parameter("top", Default = "10", Required = true)]
+            public int Lines { get; set; }
         }
 
         #region Dependencies
 
         /// <summary>
-        /// Gets or sets the room service.
+        /// Gets or sets the log service.
         /// </summary>
         /// <value>
-        /// The room service.
+        /// The log service.
         /// </value>
-        public IRoomService RoomService { get; set; }
+        public ILogService LogService { get; set; }
 
         /// <summary>
         /// Gets or sets the chat service.
@@ -39,7 +33,7 @@ namespace AutoBot.Handlers.Rooms
         /// The chat service.
         /// </value>
         public IChatService ChatService { get; set; }
-
+    
         #endregion
 
         /// <summary>
@@ -49,9 +43,12 @@ namespace AutoBot.Handlers.Rooms
         /// <param name="options">The options.</param>
         public override void Receive(Message message, Options options)
         {
-            RoomService.Join(options.Room);
+            var lines = LogService.GetLogTop(options.Lines);
 
-            ChatService.Reply(message, "Joined room '{0}'.", options.Room);
+            foreach (var line in lines)
+            {
+                ChatService.Reply(message, line);
+            }
         }
     }
 }

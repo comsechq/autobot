@@ -3,32 +3,32 @@
 namespace AutoBot.Services
 {
     /// <summary>
-    /// Service interface for IRC rooms.
+    /// Service interface for IRC channels.
     /// </summary>
-    public interface IRoomService
+    public interface IChannelService
     {
         /// <summary>
-        /// Gets all the rooms.
+        /// Gets all the channels.
         /// </summary>
         /// <returns></returns>
         IList<string> List();
 
         /// <summary>
-        /// Joins the room with the specified name.
+        /// Joins the channel with the specified name.
         /// </summary>
         /// <param name="name">The name.</param>
         /// <returns></returns>
         bool Join(string name);
 
         /// <summary>
-        /// Leaves the room with the specified name.
+        /// Leaves the channel with the specified name.
         /// </summary>
         /// <param name="name">The name.</param>
         /// <returns></returns>
         bool Leave(string name);
 
         /// <summary>
-        /// Reconnects all rooms on login.
+        /// Reconnects all channels on login.
         /// </summary>
         void Reconnect();
     }

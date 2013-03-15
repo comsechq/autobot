@@ -1,14 +1,12 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using AutoBot.Domain;
 using Sugar.Net;
 
 namespace AutoBot.Services
 {
     /// <summary>
-    /// Service to manipulate rooms on the channels on the IRC server.
+    /// Service to manipulate channels on the channels on the IRC server.
     /// </summary>
-    public class ChannelService : IRoomService 
+    public class ChannelService : IChannelService 
     {
         /// <summary>
         /// Gets or sets the HTTP service.
@@ -43,20 +41,20 @@ namespace AutoBot.Services
         public IChatService ChatService { get; set; }
 
         /// <summary>
-        /// Gets all the rooms.
+        /// Gets all the channels.
         /// </summary>
         /// <returns></returns>
         public IList<string> List()
         {
-            var rooms = new List<string>();
+            var channels = new List<string>();
 
            
 
-            return rooms;
+            return channels;
         }
 
         /// <summary>
-        /// Joins the room with the specified name.
+        /// Joins the channel with the specified name.
         /// </summary>
         /// <param name="name">The name.</param>
         /// <returns></returns>
@@ -77,7 +75,7 @@ namespace AutoBot.Services
         }
 
         /// <summary>
-        /// Leaves the room with the specified name.
+        /// Leaves the channel with the specified name.
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>

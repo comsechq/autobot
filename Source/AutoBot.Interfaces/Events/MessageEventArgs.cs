@@ -17,10 +17,10 @@ namespace AutoBot.Events
         public Message Message { get; set; }
 
         /// <summary>
-        /// Gets or sets the room this message was recieved from.
+        /// Gets or sets the channel this message was recieved from.
         /// </summary>
         /// <value>
-        /// The room.
+        /// The channel.
         /// </value>
         public Channel Channel { get; set; }
     }

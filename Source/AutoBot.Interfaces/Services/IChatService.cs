@@ -34,31 +34,18 @@ namespace AutoBot.Services
         bool LoggedIn { get; }
 
         /// <summary>
-        /// Joins the specified room.
+        /// Joins the specified channel.
         /// </summary>
-        /// <param name="channel">The room.</param>
+        /// <param name="channel">The channel.</param>
         /// <returns></returns>
         bool Join(string channel);
 
         /// <summary>
-        /// Leaves the specified room.
+        /// Leaves the specified channel.
         /// </summary>
-        /// <param name="channel">The room.</param>
+        /// <param name="channel">The channel.</param>
         bool Leave(string channel);
-
-        /// <summary>
-        /// Says the message in the specified room.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        // void Send(string message);
-
-        /// <summary>
-        /// Says the message in the specified room.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <param name="args">The args.</param>
-        // void Send(string message, params object[] args);
-
+ 
         /// <summary>
         /// Replies the specified message with the given respons.
         /// </summary>

@@ -45,6 +45,14 @@ namespace AutoBot.Services
         /// </value>
         public IChatService ChatService { get; set; }
 
+        /// <summary>
+        /// Gets or sets the log service.
+        /// </summary>
+        /// <value>
+        /// The log service.
+        /// </value>
+        public ILogService LogService { get; set; }
+
         #endregion
 
         /// <summary>
@@ -61,6 +69,12 @@ namespace AutoBot.Services
         /// <param name="message">The message.</param>
         public void Handle(Message message)
         {          
+            // Logging
+            if (LogService.LoggingEnabled())
+            {
+                LogService.Log(message);
+            }
+
             // Check bot can handle this message
             if (!CanHandle(message))
             {
@@ -101,11 +115,11 @@ namespace AutoBot.Services
         }
 
         /// <summary>
-        /// Determines whether this instance can handle the specified message in the room.
+        /// Determines whether this instance can handle the specified message in the channel.
         /// </summary>
         /// <param name="message">The message.</param>
         /// <returns>
-        ///   <c>true</c> if this instance can handle the specified room; otherwise, <c>false</c>.
+        ///   <c>true</c> if this instance can handle the specified channel; otherwise, <c>false</c>.
         /// </returns>
         private bool CanHandle(Message message)
         {

@@ -1,4 +1,5 @@
-﻿using Con = System.Console;
+﻿using System;
+using Con = System.Console;
 
 namespace AutoBot.Core
 {
@@ -14,7 +15,14 @@ namespace AutoBot.Core
         /// <param name="args">The args.</param>
         public void WriteLine(string format, params object[] args)
         {
-            Con.WriteLine(format, args);
+            try
+            {
+                Con.WriteLine(format, args);
+            }
+            catch (Exception)
+            {
+                Con.WriteLine(format);
+            }
         }
     }
 }

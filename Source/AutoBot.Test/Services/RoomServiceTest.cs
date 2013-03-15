@@ -1,14 +1,10 @@
-﻿using System;
-using System.IO;
-using AutoBot.Domain;
-using Moq;
+﻿using Moq;
 using NUnit.Framework;
-using Sugar.Net;
 
 namespace AutoBot.Services
 {
     [TestFixture]
-    public class RoomServiceTest : AutoMockingTest
+    public class ChannelServiceTest : AutoMockingTest
     {
         private ChannelService service;
 

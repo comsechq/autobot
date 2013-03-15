@@ -62,8 +62,9 @@
     <Compile Include="Services\ICredentialService.cs" />
     <Compile Include="Services\IHandlerService.cs" />
     <Compile Include="Services\IChatService.cs" />
+    <Compile Include="Services\ILogService.cs" />
     <Compile Include="Services\INicknameService.cs" />
-    <Compile Include="Services\IRoomService.cs" />
+    <Compile Include="Services\IChannelService.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
