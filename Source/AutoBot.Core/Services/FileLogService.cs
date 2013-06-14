@@ -25,11 +25,10 @@ namespace AutoBot.Services
 
         private string GetLogFileName(DateTime dateTime)
         {
-            var rootPath = ConfigService.GetValue("logging", "path", "C:\\irc");
+            var rootPath = ConfigService.GetValue("logging", "path", "C:\\logs");
             var datePath = string.Format("{0:yyyy}\\{0:MM}\\{0:dd}", dateTime);
-            var fileName = string.Format("{0:yyyy-MM-dd}-irc-log.txt", dateTime);
 
-            return Path.Combine(rootPath, datePath, fileName);
+            return Path.Combine(rootPath, datePath, "irc-log.txt");
         }
 
         /// <summary>
@@ -135,6 +134,12 @@ namespace AutoBot.Services
             return results;
         }
 
+        /// <summary>
+        /// Searches the logs for the specified query.
+        /// </summary>
+        /// <param name="query">The query.</param>
+        /// <param name="dateTime">The date time.</param>
+        /// <returns></returns>
         public IList<string> Search(string query, DateTime dateTime)
         {
             var results = new List<string>();

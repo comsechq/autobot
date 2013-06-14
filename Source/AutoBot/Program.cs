@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
+using System.Configuration.Install;
 using System.IO;
 using System.Reflection;
+using System.ServiceProcess;
 using AutoBot.Core;
 using AutoBot.Domain;
 using AutoBot.Handlers;
@@ -15,12 +17,62 @@ namespace AutoBot
     public class Program
     {
         [ImportMany(typeof(IHandler), AllowRecomposition = true)]
-        public IList<IHandler> Handlers = new List<IHandler>();
+        public IList<IHandler> handlers = new List<IHandler>();
 
         private FileSystemWatcher watcher;
         private DirectoryCatalog directoryCatalog;
         private HandlerService handlerService;
+     
+        /// <summary>
+        /// Main entry point for the HipBot program logic.
+        /// </summary>
+        /// <param name="args">The command line arguments.</param>
+        public static void Main(string[] args)
+        {
+            // Check if running as console
+            if (Environment.UserInteractive)
+            {
+                var parameter = string.Concat(args);
 
+                switch (parameter)
+                {
+                    case "-install":
+                        ManagedInstallerClass.InstallHelper(new[] { Assembly.GetExecutingAssembly().Location });
+                        break;
+                    case "-uninstall":
+                        ManagedInstallerClass.InstallHelper(new[] { "/u", Assembly.GetExecutingAssembly().Location });
+                        break;
+                    default:
+                        Start(args);
+                        break;
+                }
+            }
+            else
+            {
+                // Start service
+                using (var service = new Service())
+                {
+                    ServiceBase.Run(service);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Starts the specified args.
+        /// </summary>
+        /// <param name="args">The args.</param>
+        public static void Start(string[] args)
+        {
+            new Program().Initialize(args);            
+        }
+
+        /// <summary>
+        /// Stops this instance.
+        /// </summary>
+        public static void Stop()
+        {      
+        }
+   
         /// <summary>
         /// Gets the directory of the current process.
         /// </summary>
@@ -72,7 +124,7 @@ namespace AutoBot
             try
             {
                 // Remove handlers
-                foreach (var handler in Handlers)
+                foreach (var handler in handlers)
                 {
                     for (var i = handlerService.Handlers.Count - 1; i > 0; i--)
                     {
@@ -97,7 +149,7 @@ namespace AutoBot
         void directoryCatalog_Changed(object sender, ComposablePartCatalogChangeEventArgs e)
         {
             // Register handlers
-            foreach (var handler in Handlers)
+            foreach (var handler in handlers)
             {
                 Stencil.Instance.AddType(handler.GetType());
 
@@ -123,7 +175,7 @@ namespace AutoBot
             Stencil.Defaults.Assemblies.Add(typeof(ICommand).Assembly);
 
             // Register handlers
-            foreach (var handler in Handlers)
+            foreach (var handler in handlers)
             {
                 Stencil.Defaults.Types.Add(handler.GetType());
             }
@@ -186,15 +238,6 @@ namespace AutoBot
             System.Console.WriteLine("Plugins Changed");
 
             directoryCatalog.Refresh();
-        }
-
-        /// <summary>
-        /// Main entry point for the HipBot program logic.
-        /// </summary>
-        /// <param name="args">The command line arguments.</param>
-        public static void Main(string[] args)
-        {
-            new Program().Initialize(args);
         }
     }
 }

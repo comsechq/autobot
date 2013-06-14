@@ -1,0 +1,11 @@
+﻿I understand the following commands:
+  - cpu
+  - dir
+  - echo
+  - exec
+  - exit
+  - hello
+  - ps
+  - tail
+  - version
+Type "help [command]" for help on each command.

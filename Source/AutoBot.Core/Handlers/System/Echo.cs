@@ -5,12 +5,16 @@ using Sugar.Command;
 namespace AutoBot.Handlers.System
 {
     /// <summary>
-    /// Says hello to the sender
+    /// Echo's the given input
     /// </summary>
     public class Echo : Handler<Echo.Options>
     {
-        [Flag("hello")]
-        public class Options {}
+        [Flag("echo")]
+        public class Options
+        {
+            [Parameter("echo")]
+            public string Message { get; set; }
+        }
 
         /// <summary>
         /// Gets or sets the chat service.
@@ -27,7 +31,7 @@ namespace AutoBot.Handlers.System
         /// <param name="options">The options.</param>
         public override void Receive(Message message, Options options)
         {
-            ChatService.Reply(message, "Hello " + message.From);
+            ChatService.Reply(message, options.Message);
         }
     }
 }

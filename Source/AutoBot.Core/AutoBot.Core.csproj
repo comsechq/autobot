@@ -48,6 +48,7 @@
     <Compile Include="Core\Connection.cs" />
     <Compile Include="Core\Console.cs" />
     <Compile Include="Core\Context.cs" />
+    <Compile Include="Core\FileWatcher.cs" />
     <Compile Include="Core\MessageParser.cs" />
     <Compile Include="Core\MessageParserLinks\PrivateMessageLink.cs" />
     <Compile Include="Core\MessageParserLinks\PingLink.cs" />
@@ -55,17 +56,17 @@
     <Compile Include="Handlers\Aliases\AddAlias.cs" />
     <Compile Include="Handlers\Aliases\ListAlias.cs" />
     <Compile Include="Handlers\Aliases\RemoveAlias.cs" />
+    <Compile Include="Handlers\FileWatcher\Watch.cs" />
     <Compile Include="Handlers\Logging\LogSearch.cs" />
     <Compile Include="Handlers\Logging\LogTop.cs" />
     <Compile Include="Handlers\Logging\EnableLogging.cs" />
+    <Compile Include="Handlers\System\Hello.cs" />
+    <Compile Include="Handlers\System\Help.cs" />
     <Compile Include="Handlers\System\Tail.cs" />
     <Compile Include="Handlers\System\Dir.cs" />
     <Compile Include="Handlers\System\Cpu.cs" />
     <Compile Include="Handlers\System\Exec.cs" />
     <Compile Include="Handlers\System\Processes.cs" />
-    <Compile Include="Handlers\System\Recycle.cs" />
-    <Compile Include="Handlers\Update\SetUpdateUrl.cs" />
-    <Compile Include="Handlers\Update\UpdateNow.cs" />
     <Compile Include="Handlers\System\Version.cs" />
     <Compile Include="Handlers\System\Exit.cs" />
     <Compile Include="Handlers\System\Echo.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="Services\AliasService.cs" />
     <Compile Include="Services\ConfigService.cs" />
     <Compile Include="Services\CredentialService.cs" />
+    <Compile Include="Services\FileWatcherService.cs" />
     <Compile Include="Services\HandlerService.cs" />
     <Compile Include="Services\ChatService.cs" />
     <Compile Include="Services\FileLogService.cs" />
@@ -89,6 +91,9 @@
       <Project>{9488fc79-afde-4a1b-83cb-a9304993edc5}</Project>
       <Name>AutoBot.Interfaces</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Help.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

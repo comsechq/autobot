@@ -1,20 +1,16 @@
-﻿using System.ComponentModel.Composition;
-using AutoBot.Domain;
+﻿using AutoBot.Domain;
 using AutoBot.Services;
 using Sugar.Command;
 
 namespace AutoBot.Handlers.System
 {
     /// <summary>
-    /// Displays the current processes running
+    /// Says hello to the sender
     /// </summary>
-    [Export(typeof(IHandler))]
-    public class Recycle : Handler<Recycle.Options>
+    public class Hello : Handler<Hello.Options>
     {
-        [Flag("recycle")]
+        [Flag("hello")]
         public class Options {}
-        
-        #region Dependencies
 
         /// <summary>
         /// Gets or sets the chat service.
@@ -23,8 +19,6 @@ namespace AutoBot.Handlers.System
         /// The chat service.
         /// </value>
         public IChatService ChatService { get; set; }
-        
-        #endregion
 
         /// <summary>
         /// Receives the specified message.
@@ -33,7 +27,7 @@ namespace AutoBot.Handlers.System
         /// <param name="options">The options.</param>
         public override void Receive(Message message, Options options)
         {
-            ChatService.Reply(message, "Recycling bot.");
+            ChatService.Reply(message, "Hello " + message.From);
         }
     }
 }

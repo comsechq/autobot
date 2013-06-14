@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Sugar.Command;
 using Sugar.Configuration;
 using Sugar.IO;
 
@@ -77,9 +78,7 @@ namespace AutoBot.Services
         private string GetConfigurationFilename()
         {
             // Configuration file in user directory
-            var directory = FileService.GetUserDataDirectory();
-
-            directory = Path.Combine(directory, "AutoBot");
+            var directory = Path.GetDirectoryName(typeof(ConfigService).Assembly.Location) ?? string.Empty;
 
             // Ensure directory exists
             if (!Directory.Exists(directory))
@@ -87,7 +86,14 @@ namespace AutoBot.Services
                 Directory.CreateDirectory(directory);
             }
 
-            return Path.Combine(directory, "AutoBot.config");
+            // Check for custom config filename
+            var configFileName = "AutoBot.config";
+            if (Parameters.Current.Contains("config"))
+            {
+                configFileName = string.Format("{0}.config", Parameters.Current.AsString("config"));
+            }
+
+            return Path.Combine(directory, configFileName);
         }
     }
 }

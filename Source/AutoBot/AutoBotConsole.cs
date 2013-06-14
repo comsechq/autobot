@@ -46,6 +46,14 @@ namespace AutoBot
         /// </value>
         public ICredentialService CredentialService { get; set; }
 
+        /// <summary>
+        /// Gets or sets the file watcher service.
+        /// </summary>
+        /// <value>
+        /// The file watcher service.
+        /// </value>
+        public IFileWatcherService FileWatcherService { get; set; }
+
         #endregion
 
         /// <summary>
@@ -80,12 +88,16 @@ namespace AutoBot
         /// Handles the OnLogin event of the ChatService.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
         void ChatService_OnLogin(object sender, EventArgs e)
         {
             Thread.Sleep(4000);
 
+            // Re-join channels
             ChannelService.Reconnect();
+
+            // Continue watching any files
+            FileWatcherService.Initialize();
         }
 
         /// <summary>
@@ -124,9 +136,13 @@ namespace AutoBot
             // Login
             ChatService.Login(credentials);
 
-            while (true)
+            // Wait forever if running as a console
+            if (Environment.UserInteractive)
             {
-                Thread.Sleep(1000);
+                while (true)
+                {
+                    Thread.Sleep(1000);
+                }
             }
         }
 
@@ -136,16 +152,19 @@ namespace AutoBot
             Console.WriteLine("");
             Console.WriteLine("Usage:");
             Console.WriteLine("");
-            Console.WriteLine("  autobot -s [server] -p [port] -pwd [password] -n [nick] -r [real name]");
-            Console.WriteLine("          (-load|-save)");
+            Console.WriteLine("  autobot    -s [server] -p [port] -pwd [password] -n [nick] -r [real name]");
+            Console.WriteLine("             (-load|-save) (-config [config]) (-install|-uninstall) ");
             Console.WriteLine("");
-            Console.WriteLine("  -s      The IRC server hostname");
-            Console.WriteLine("  -s      The IRC server port");
-            Console.WriteLine("  -s      The IRC server password");
-            Console.WriteLine("  -s      The nickname to use");
-            Console.WriteLine("  -s      The realname to use");
-            Console.WriteLine("  -save   Saves the given credentials (in plain text)");
-            Console.WriteLine("  -load   Loads the previously saved credentials");
+            Console.WriteLine("  -s         The IRC server hostname");
+            Console.WriteLine("  -p         The IRC server port");
+            Console.WriteLine("  -pwd       The IRC server password");
+            Console.WriteLine("  -n         The nickname to use");
+            Console.WriteLine("  -r         The realname to use");
+            Console.WriteLine("  -save      Saves the given credentials (in plain text)");
+            Console.WriteLine("  -load      Loads the previously saved credentials");
+            Console.WriteLine("  -config    Use a custom configuration file name. The default is 'autobot'");
+            Console.WriteLine("  -install   Installs Autobot as a Windows service");
+            Console.WriteLine("  -uninstall Uninstalls Autobot as a Windows service");
         }
     }
 }

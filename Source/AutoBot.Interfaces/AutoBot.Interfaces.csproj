@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\IConsole.cs" />
+    <Compile Include="Core\IFileWatcher.cs" />
     <Compile Include="Core\IMessageParser.cs" />
     <Compile Include="Core\IMessageParserLink.cs" />
     <Compile Include="Domain\Credentials.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="Services\IAliasService.cs" />
     <Compile Include="Services\IConfigService.cs" />
     <Compile Include="Services\ICredentialService.cs" />
+    <Compile Include="Services\IFileWatcherService.cs" />
     <Compile Include="Services\IHandlerService.cs" />
     <Compile Include="Services\IChatService.cs" />
     <Compile Include="Services\ILogService.cs" />
