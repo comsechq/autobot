@@ -31,6 +31,14 @@ namespace AutoBot.Services
         string GetAlias(string name);
 
         /// <summary>
+        /// Formats an incoming command with the alias with the given name.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="original">The original.</param>
+        /// <returns></returns>
+        string FormatAlias(string name, string original);
+
+        /// <summary>
         /// Removes the alias with the given name.
         /// </summary>
         /// <param name="name">The name.</param>

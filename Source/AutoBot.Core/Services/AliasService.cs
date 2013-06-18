@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Sugar.Command;
 
 namespace AutoBot.Services
 {
@@ -64,6 +65,34 @@ namespace AutoBot.Services
             var config = ConfigService.GetConfig();
 
             return config.GetValue("Aliases", name, string.Empty);
+        }
+
+        /// <summary>
+        /// Formats an incoming command with the alias with the given name.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="original">The original.</param>
+        /// <returns></returns>
+        /// <exception cref="System.NotImplementedException"></exception>
+        public string FormatAlias(string name, string original)
+        {
+            var parameters = new ParameterParser().Parse(original);
+
+            var result = ConfigService.GetValue("Aliases", name, "") ?? string.Empty;
+
+            for (int i = 0; i < parameters.Count; i++)
+            {
+                var parameter = parameters[i];
+
+                if (parameter.Contains(" "))
+                {
+                    parameter = @"""" + parameter + @"""";
+                }
+
+                result = result.Replace("%" + i, parameter);
+            }
+
+            return result;
         }
 
         /// <summary>

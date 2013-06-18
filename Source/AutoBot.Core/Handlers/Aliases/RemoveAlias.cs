@@ -18,7 +18,7 @@ namespace AutoBot.Handlers.Aliases
             /// <value>
             /// The name.
             /// </value>
-            [Parameter("name", Required = true)]
+            [Parameter("remove", Required = true)]
             public string Name { get; set; }
         }
 

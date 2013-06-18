@@ -41,13 +41,21 @@
           </fileset>
         </copy>
             		
-    	  <!-- Save for later -->
+    	  <!-- Save for artifacts -->
         <zip zipfile="${artifacts.dir}\AutoBot.${git.revision}.zip">
     		<fileset basedir="${deploy.dir}">
     			<include name="*.dll" />
     			<include name="*.exe" />
     		</fileset>           
     	</zip>
+
+          <!-- Save for artifacts as latest -->
+        <zip zipfile="${artifacts.dir}\AutoBot.Latest.zip">
+            <fileset basedir="${deploy.dir}">
+                <include name="*.dll" />
+                <include name="*.exe" />
+            </fileset>           
+        </zip>
 
         <!-- Write latest version -->
         <property name="bot.url" value="http://localhost/" />

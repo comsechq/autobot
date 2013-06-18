@@ -129,5 +129,17 @@ namespace AutoBot.Services
             Assert.AreEqual("test one=alias one", lines[0]);
             Assert.AreEqual("test two=alias two", lines[1]);
         }
+
+        [Test]
+        public void TestFormatAlias()
+        {
+            Mock<IConfigService>()
+                .Setup(call => call.GetValue("Aliases", "test", ""))
+                .Returns("echo %1");
+
+            var result = service.FormatAlias("test", @"test ""hello world""");
+
+            Assert.AreEqual(@"echo ""hello world""", result);
+        }
     }
 }

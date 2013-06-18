@@ -85,7 +85,7 @@ namespace AutoBot.Services
             var command = message.Body.SubstringBeforeChar(" ");
             if (AliasService.IsAlias(command))
             {
-                message.Body = AliasService.GetAlias(command) + " " + message.Body.SubstringAfterChar(" ");
+                message.Body = AliasService.FormatAlias(command, message.Body);
             }
 
             // Remove Alias bypass
