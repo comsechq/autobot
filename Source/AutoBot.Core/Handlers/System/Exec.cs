@@ -45,13 +45,18 @@ namespace AutoBot.Handlers.System
             /// </value>
             [Parameter("status")]
             public string Status { get; set; }
+
+            [Flag("echo")]
+            public bool EchoOutput { get; set; }
         }
 
         private readonly IList<string> lines = new List<string>();
         private bool executing;
+        private bool echoOutput;
+        private Message originalMessage;
 
         #region Dependencies
-        
+
         /// <summary>
         /// Gets or sets the chat service.
         /// </summary>
@@ -79,9 +84,9 @@ namespace AutoBot.Handlers.System
         {
             if (executing)
             {
-                ChatService.Reply(message, "Can't you see, I'm busy!");
+                ChatService.Reply(message, "Already running a process.");
 
-                return;                
+                return;
             }
 
             var start = DateTime.Now;
@@ -92,10 +97,10 @@ namespace AutoBot.Handlers.System
             lines.Clear();
 
             var process = new Process
-            {              
+            {
                 StartInfo =
                 {
-                    UseShellExecute = false, 
+                    UseShellExecute = false,
                     RedirectStandardOutput = true,
                     FileName = options.FileName,
                     Arguments = options.Arguments
@@ -104,13 +109,11 @@ namespace AutoBot.Handlers.System
 
             process.OutputDataReceived += process_OutputDataReceived;
 
-            Console.WriteLine("Starting Process");
-
             try
             {
                 executing = true;
-
-                Console.WriteLine("Starting Process");
+                echoOutput = options.EchoOutput;
+                originalMessage = message;
 
                 process.Start();
                 process.BeginOutputReadLine();
@@ -129,12 +132,15 @@ namespace AutoBot.Handlers.System
             finally
             {
                 executing = false;
-                ChatService.SetStatus(Status.Available, string.Empty);                
+                ChatService.SetStatus(Status.Available, string.Empty);
             }
 
-            foreach (var line in lines)
+            if (!echoOutput)
             {
-                ChatService.Reply(message, line);
+                foreach (var line in lines)
+                {
+                    ChatService.Reply(message, line);
+                }
             }
         }
 
@@ -153,6 +159,11 @@ namespace AutoBot.Handlers.System
                 var line = e.Data.Keep(toKeep).TrimTo(80, string.Empty);
 
                 lines.Add(line);
+
+                if (echoOutput)
+                {
+                    ChatService.Reply(originalMessage, line);
+                }
 
                 if (lines.Count > 10)
                 {
