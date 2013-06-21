@@ -51,7 +51,7 @@ namespace AutoBot.Handlers.Nicknames
         {
             NicknameService.Remove(options.Nickname);
 
-            ChatService.Reply(message, "Removed nickname '{0}'.", options.Nickname);
+            ChatService.ReplyFormat(message, "Removed nickname '{0}'.", options.Nickname);
         }
     }
 }

@@ -91,8 +91,6 @@ namespace AutoBot
         /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
         void ChatService_OnLogin(object sender, EventArgs e)
         {
-            Thread.Sleep(4000);
-
             // Re-join channels
             ChannelService.Reconnect();
 

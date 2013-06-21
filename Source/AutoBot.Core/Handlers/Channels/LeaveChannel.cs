@@ -51,7 +51,7 @@ namespace AutoBot.Handlers.Channels
         {
             ChannelService.Leave(options.Channel);
 
-            ChatService.Reply(message, "Leaving channel '{0}'.", options.Channel);
+            ChatService.ReplyFormat(message, "Leaving channel '{0}'.", options.Channel);
         }
     }
 }

@@ -60,7 +60,7 @@ namespace AutoBot.Handlers.Aliases
         {
             AliasService.SetAlias(options.Name, options.Value);
 
-            ChatService.Reply(message, "Added alias '{0}'.", options.Name);
+            ChatService.ReplyFormat(message, "Added alias '{0}'.", options.Name);
         }
     }
 }

@@ -76,7 +76,7 @@ namespace AutoBot.Handlers.System
             {
                 if (info.Name.IndexOf(filter, StringComparison.InvariantCultureIgnoreCase) > -1)
                 {
-                    ChatService.Reply(message, "{0:HH:mm:ss} {1:HH:mm:ss} {2}", info.StartTime, info.ActiveTime, info.Name);
+                    ChatService.ReplyFormat(message, "{0:HH:mm:ss} {1:HH:mm:ss} {2}", info.StartTime, info.ActiveTime, info.Name);
 
                     Thread.Sleep(100);
                 }

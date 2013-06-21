@@ -55,12 +55,12 @@ namespace AutoBot.Handlers.System
 
                 samples.Add(cpuUsage);
 
-                ChatService.Reply(message, "CPU Sample {1}: {0:#0.0}%", cpuUsage, i);
+                ChatService.ReplyFormat(message, "CPU Sample {1}: {0:#0.0}%", cpuUsage, i);
             }
      
             if (options.Samples > 1)
             {
-                ChatService.Reply(message, "Average CPU: {0:#0.0}% ({1} samples)", samples.Average(), samples.Count);
+                ChatService.ReplyFormat(message, "Average CPU: {0:#0.0}% ({1} samples)", samples.Average(), samples.Count);
             }
         }
 

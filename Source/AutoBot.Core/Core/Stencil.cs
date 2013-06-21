@@ -405,7 +405,7 @@ namespace AutoBot.Core
                 }
 
                 // Set generic lists
-                if (propertyType.IsGenericType && propertyType.GetGenericTypeDefinition() == typeof(IList<>))
+                if (propertyType.IsGenericType && propertyType.GetGenericTypeDefinition() == typeof(IList<>) && property.CanWrite)
                 {
                     // Create a generic list
                     var genericType = propertyType.GetGenericArguments()[0];

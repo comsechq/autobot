@@ -50,8 +50,10 @@
     <Compile Include="Core\Context.cs" />
     <Compile Include="Core\FileWatcher.cs" />
     <Compile Include="Core\MessageParser.cs" />
+    <Compile Include="Core\MessageParserLinks\SetModeLink.cs" />
     <Compile Include="Core\MessageParserLinks\PrivateMessageLink.cs" />
     <Compile Include="Core\MessageParserLinks\PingLink.cs" />
+    <Compile Include="Core\Process.cs" />
     <Compile Include="Core\Stencil.cs" />
     <Compile Include="Handlers\Aliases\AddAlias.cs" />
     <Compile Include="Handlers\Aliases\ListAlias.cs" />
@@ -60,12 +62,14 @@
     <Compile Include="Handlers\Logging\LogSearch.cs" />
     <Compile Include="Handlers\Logging\LogTop.cs" />
     <Compile Include="Handlers\Logging\EnableLogging.cs" />
+    <Compile Include="Handlers\System\ProcessPeek.cs" />
+    <Compile Include="Handlers\System\ProcessKill.cs" />
     <Compile Include="Handlers\System\Hello.cs" />
     <Compile Include="Handlers\System\Help.cs" />
     <Compile Include="Handlers\System\Tail.cs" />
     <Compile Include="Handlers\System\Dir.cs" />
     <Compile Include="Handlers\System\Cpu.cs" />
-    <Compile Include="Handlers\System\Exec.cs" />
+    <Compile Include="Handlers\System\ProcessStart.cs" />
     <Compile Include="Handlers\System\Processes.cs" />
     <Compile Include="Handlers\System\Version.cs" />
     <Compile Include="Handlers\System\Exit.cs" />

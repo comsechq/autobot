@@ -51,7 +51,7 @@ namespace AutoBot.Handlers.Aliases
         {
             AliasService.RemoveAlias(options.Name);
 
-            ChatService.Reply(message, "Removed alias '{0}'.", options.Name);
+            ChatService.ReplyFormat(message, "Removed alias '{0}'.", options.Name);
         }
     }
 }

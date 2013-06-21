@@ -51,7 +51,7 @@ namespace AutoBot.Handlers.Nicknames
         {
             NicknameService.Add(options.Nickname);
 
-            ChatService.Reply(message, "Added nickname '{0}'.", options.Nickname);
+            ChatService.ReplyFormat(message, "Added nickname '{0}'.", options.Nickname);
         }
     }
 }

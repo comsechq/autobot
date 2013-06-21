@@ -47,6 +47,7 @@
     <Compile Include="Core\IFileWatcher.cs" />
     <Compile Include="Core\IMessageParser.cs" />
     <Compile Include="Core\IMessageParserLink.cs" />
+    <Compile Include="Core\IProcess.cs" />
     <Compile Include="Domain\Credentials.cs" />
     <Compile Include="Domain\Message.cs" />
     <Compile Include="Domain\Channel.cs" />

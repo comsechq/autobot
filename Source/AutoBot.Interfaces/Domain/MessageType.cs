@@ -16,6 +16,10 @@
         /// <summary>
         /// The message is a private message
         /// </summary>
-        PrivateMessage
+        PrivateMessage,
+        /// <summary>
+        /// The message is a set mode message
+        /// </summary>
+        SetMode
     }
 }

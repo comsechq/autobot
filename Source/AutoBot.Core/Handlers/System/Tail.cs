@@ -84,7 +84,7 @@ namespace AutoBot.Handlers.System
             }
             else
             {
-                ChatService.Reply(message, "Can't find file: {0}", filename);
+                ChatService.ReplyFormat(message, "Can't find file: {0}", filename);
             }
         }
 

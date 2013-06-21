@@ -54,7 +54,7 @@ namespace AutoBot.Handlers.FileWatcher
         {
             FileWatcherService.Watch(options.FileName, options.Channel);
 
-            ChatService.Reply(message, "Watching: {0}", options.FileName);
+            ChatService.ReplyFormat(message, "Watching: {0}", options.FileName);
         }
     }
 }

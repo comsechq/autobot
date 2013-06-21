@@ -33,7 +33,7 @@ namespace AutoBot.Handlers.System
             var location = typeof (Version).Assembly.Location;
             var built = File.GetLastWriteTime(location);
 
-            ChatService.Reply(message, "Version: {0} - Built: {1:dd MMM yyyy} at {1:HH:mm} ({2})", assembly, built, built.ToHumanReadableString());
+            ChatService.ReplyFormat(message, "Version: {0} - Built: {1:dd MMM yyyy} at {1:HH:mm} ({2})", assembly, built, built.ToHumanReadableString());
         }
     }
 }

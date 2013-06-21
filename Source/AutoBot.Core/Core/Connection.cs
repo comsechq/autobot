@@ -1,4 +1,5 @@
-﻿using System.Net.Security;
+﻿using System;
+using System.Net.Security;
 using System.Net.Sockets;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
@@ -31,15 +32,22 @@ namespace AutoBot.Core
         /// <returns></returns>
         public bool Connect(string server, int port)
         {
-            client = new TcpClient(server, port);
+            try
+            {
+                client = new TcpClient(server, port);
 
-            network = new SslStream(client.GetStream(), false, ValidateServerCert, null);
-            network.AuthenticateAsClient(server);
+                network = new SslStream(client.GetStream(), false, ValidateServerCert, null);
+                network.AuthenticateAsClient(server);
 
-            receive = new StreamReader(network);
-            send = new StreamWriter(network);
+                receive = new StreamReader(network);
+                send = new StreamWriter(network);
 
-            return true;
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         /// <summary>

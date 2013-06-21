@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using AutoBot.Core;
 using Sugar.Net;
 
 namespace AutoBot.Services
@@ -39,6 +40,14 @@ namespace AutoBot.Services
         /// The chat service.
         /// </value>
         public IChatService ChatService { get; set; }
+
+        /// <summary>
+        /// Gets or sets the console.
+        /// </summary>
+        /// <value>
+        /// The console.
+        /// </value>
+        public IConsole Console { get; set; }
 
         /// <summary>
         /// Gets all the channels.
@@ -111,6 +120,8 @@ namespace AutoBot.Services
 
             foreach (var line in lines)
             {
+                Console.WriteLine("Attempting to rejoin channel {0}", line.Key);
+
                 ChatService.Join(line.Key);
             }
 

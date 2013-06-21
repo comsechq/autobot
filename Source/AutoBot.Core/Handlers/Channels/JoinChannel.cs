@@ -51,7 +51,7 @@ namespace AutoBot.Handlers.Channels
         {
             ChannelService.Join(options.Channel);
 
-            ChatService.Reply(message, "Joined channel '{0}'.", options.Channel);
+            ChatService.ReplyFormat(message, "Joined channel '{0}'.", options.Channel);
         }
     }
 }

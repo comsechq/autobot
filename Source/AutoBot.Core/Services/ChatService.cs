@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.IO;
 using System.Threading;
 using AutoBot.Core;
 using AutoBot.Domain;
@@ -13,6 +14,9 @@ namespace AutoBot.Services
     public class ChatService : IChatService
     {
         private readonly IConnection connection;
+        private Credentials loginCredentials;
+        private DateTime lastPong;
+        private DateTime lastLoginAttempt;
 
         /// <summary>
         /// Gets or sets the message parser.
@@ -38,12 +42,13 @@ namespace AutoBot.Services
             connection = new Connection();
 
             var worker = new BackgroundWorker();
+
             worker.DoWork += worker_DoWork;
             worker.RunWorkerAsync();
         }
-      
+
         #region Events
-        
+
         /// <summary>
         /// Occurs when the Bot logs in
         /// </summary>
@@ -68,9 +73,27 @@ namespace AutoBot.Services
             while (true)
             {
                 // Check logged in
-                if (!LoggedIn) continue;
+                if (!LoggedIn)
+                {
+                    Thread.Sleep(1000);
 
-                var data = connection.Receive();
+                    AttemptLogin();
+
+                    continue;
+                }
+
+                string data;
+
+                try
+                {
+                    data = connection.Receive();
+                }
+                catch (Exception)
+                {
+                    LoggedIn = false;
+
+                    continue;
+                }
 
                 // Check received data
                 if (string.IsNullOrWhiteSpace(data)) continue;
@@ -83,6 +106,18 @@ namespace AutoBot.Services
                 if (message.Type == MessageType.Ping)
                 {
                     Send("PONG {0}", message.Body);
+
+                    lastPong = DateTime.Now;
+
+                    continue;
+                }
+
+                // Handle Set Mode Message
+                if (message.Type == MessageType.SetMode)
+                {
+                    // Raise event
+                    OnLogin(this, new LoginEventArgs());
+
                     continue;
                 }
 
@@ -90,7 +125,7 @@ namespace AutoBot.Services
                 OnMessage(this, new MessageEventArgs { Message = message });
             }
         }
-  
+
         #endregion
 
         /// <summary>
@@ -107,6 +142,8 @@ namespace AutoBot.Services
         /// <param name="credentials">The credentials.</param>
         public void Login(Credentials credentials)
         {
+            loginCredentials = credentials;
+
             if (connection.Connect(credentials.Server, credentials.Port))
             {
                 connection.Send("PASS {0}", credentials.Password);
@@ -115,12 +152,30 @@ namespace AutoBot.Services
 
                 LoggedIn = true;
 
+                lastPong = DateTime.Now;
+
                 // Assign Context information
                 Context.Nick = credentials.Nick;
-
-                // Raise event
-                OnLogin(this, new LoginEventArgs());
             }
+        }
+
+        /// <summary>
+        /// Attempts to login to the server.
+        /// </summary>
+        /// <exception cref="System.NotImplementedException"></exception>
+        private void AttemptLogin()
+        {
+            // Only Attempt to login every 60 seconds
+            if ((DateTime.Now - lastLoginAttempt).TotalSeconds < 60)
+            {
+                return;
+            }
+
+            lastLoginAttempt = DateTime.Now;
+
+            Console.WriteLine("Attempting to connect to: {0}", loginCredentials.Server);
+
+            Login(loginCredentials);
         }
 
         /// <summary>
@@ -144,6 +199,23 @@ namespace AutoBot.Services
             Send("PART #{0}", channel);
 
             return true;
+        }
+
+        public void Reply(string channel, string response)
+        {
+            // Send message
+            Send("PRIVMSG {0} :{1}", channel, response);
+        }
+
+        /// <summary>
+        /// Replies to the specified channel.
+        /// </summary>
+        /// <param name="channel">The channel.</param>
+        /// <param name="response">The response.</param>
+        /// <param name="args">The args.</param>
+        public void ReplyFormat(string channel, string response, params object[] args)
+        {
+            Reply(channel, string.Format(response, args));
         }
 
         /// <summary>
@@ -181,7 +253,7 @@ namespace AutoBot.Services
             }
 
             // Send message
-            Send("PRIVMSG {0} :{1}", to, response);
+            Reply(to, response);
         }
 
         /// <summary>
@@ -190,44 +262,9 @@ namespace AutoBot.Services
         /// <param name="message">The message.</param>
         /// <param name="response">The response.</param>
         /// <param name="args">The args.</param>
-        /// <exception cref="System.NotImplementedException"></exception>
-        public void Reply(Message message, string response, params object[] args)
+        public void ReplyFormat(Message message, string response, params object[] args)
         {
             Reply(message, string.Format(response, args));
-        }
-
-        /// <summary>
-        /// Sets the bot's status.
-        /// </summary>
-        /// <param name="status">The status.</param>
-        /// <param name="message">The message.</param>
-        public void SetStatus(Status status, string message)
-        {
-            // Ensure we're logged in
-            //if (!LoggedIn) return;         
-
-            //switch (status)
-            //{
-            //    case Status.Available:
-            //        connection.Show = ShowType.NONE;
-            //        break;
-
-            //    case Status.Away:
-            //        connection.Show = ShowType.away;
-            //        break;
-                    
-            //    case Status.Busy:
-            //        connection.Show = ShowType.dnd;
-            //        break;
-
-            //    default:
-            //        throw new ApplicationException("Unknown status type: " + status);
-
-            //}
-
-            //connection.Status = message;
-
-            //connection.SendMyPresence();
         }
     }
 }

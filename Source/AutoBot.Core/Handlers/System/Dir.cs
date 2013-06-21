@@ -90,12 +90,12 @@ namespace AutoBot.Handlers.System
 
                 if (files.Length == 0)
                 {
-                    ChatService.Reply(message, "(no files) {0:###,##0} file(s).", files.Length);
+                    ChatService.ReplyFormat(message, "(no files) {0:###,##0} file(s).", files.Length);
                 }
             }
             else
             {
-                ChatService.Reply(message, "Can't find directory: {0}", path);
+                ChatService.ReplyFormat(message, "Can't find directory: {0}", path);
             }
         }      
     }

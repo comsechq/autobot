@@ -45,9 +45,24 @@ namespace AutoBot.Services
         /// </summary>
         /// <param name="channel">The channel.</param>
         bool Leave(string channel);
- 
+
         /// <summary>
-        /// Replies the specified message with the given respons.
+        /// Replies to the specified channel.
+        /// </summary>
+        /// <param name="channel">The channel.</param>
+        /// <param name="response">The response.</param>
+        void Reply(string channel, string response);
+
+        /// <summary>
+        /// Replies to the specified channel.
+        /// </summary>
+        /// <param name="channel">The channel.</param>
+        /// <param name="response">The response.</param>
+        /// <param name="args">The args.</param>
+        void ReplyFormat(string channel, string response, params object[] args);
+
+        /// <summary>
+        /// Replies the specified message with the given response.
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="response">The response.</param>
@@ -59,13 +74,6 @@ namespace AutoBot.Services
         /// <param name="message">The message.</param>
         /// <param name="response">The response.</param>
         /// <param name="args">The args.</param>
-        void Reply(Message message, string response, params object[] args);
-
-        /// <summary>
-        /// Sets the bot's status.
-        /// </summary>
-        /// <param name="status">The status.</param>
-        /// <param name="message">The message.</param>
-        void SetStatus(Status status, string message);
+        void ReplyFormat(Message message, string response, params object[] args);
     }
 }

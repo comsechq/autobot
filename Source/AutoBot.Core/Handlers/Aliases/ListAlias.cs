@@ -46,7 +46,7 @@ namespace AutoBot.Handlers.Aliases
                 ChatService.Reply(message, alias);
             }
 
-            ChatService.Reply(message, "{0} aliases.", aliases.Count);
+            ChatService.ReplyFormat(message, "{0} aliases.", aliases.Count);
         }
     }
 }
