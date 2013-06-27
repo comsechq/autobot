@@ -92,6 +92,8 @@ namespace AutoBot.Handlers.System
 
             ChatService.ReplyFormat(message, "Starting: {0} {1}", options.FileName, options.Arguments);
 
+            // Remove and re-attach event
+            Process.Exited -= Process_Exited;
             Process.Exited += Process_Exited;
 
             Process.Start(options.FileName, options.Arguments);
@@ -119,7 +121,7 @@ namespace AutoBot.Handlers.System
                 ChatService.Reply(channel, line);
             }
 
-            ChatService.ReplyFormat(channel, "Finished process in {0}:{1:00} mins.", Process.ElapsedTime.TotalMinutes, Process.ElapsedTime.Seconds);
+            ChatService.ReplyFormat(channel, "Finished process in {0:##0}:{1:00} mins.", Process.ElapsedTime.TotalMinutes, Process.ElapsedTime.Seconds);
         }
     }
 }
