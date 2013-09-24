@@ -111,8 +111,10 @@ namespace AutoBot.Services
                 {
                     data = connection.Receive();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Console.WriteLine("Receive Error: " + ex.Message);
+
                     LoggedIn = false;
 
                     continue;
