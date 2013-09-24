@@ -17,6 +17,7 @@ namespace AutoBot.Services
         private Credentials loginCredentials;
         private DateTime lastPong;
         private DateTime lastLoginAttempt;
+        private Timer keepAliveTimer;
 
         /// <summary>
         /// Gets or sets the message parser.
@@ -45,6 +46,26 @@ namespace AutoBot.Services
 
             worker.DoWork += worker_DoWork;
             worker.RunWorkerAsync();
+
+            keepAliveTimer = new Timer(KeepAlive, null, 60000, 60000);
+        }
+
+        private void KeepAlive(object state)
+        {
+            if (!LoggedIn) return;
+
+            var lastPongSeconds = (DateTime.Now - lastPong).TotalSeconds;
+
+            if (lastPongSeconds > 300)
+            {
+                Console.WriteLine("Lost connection to server, logging in again...");
+
+                LoggedIn = false;
+            }
+            else
+            {
+                Console.WriteLine("Last PONG: {0:0} secs.", lastPongSeconds);
+            }
         }
 
         #region Events
@@ -80,6 +101,14 @@ namespace AutoBot.Services
                     AttemptLogin();
 
                     continue;
+                }
+
+                // Check PING / PONG
+                if (!CheckPingPong())
+                {
+                    Console.WriteLine("PING/PONG Timeout, logging in again.");
+
+                    continue;                    
                 }
 
                 string data;
@@ -124,6 +153,15 @@ namespace AutoBot.Services
                 // Fire event
                 OnMessage(this, new MessageEventArgs { Message = message });
             }
+        }
+
+        /// <summary>
+        /// Checks a ping/pong handshake has occured within the last 5 mintues.
+        /// </summary>
+        /// <returns></returns>
+        private bool CheckPingPong()
+        {
+            return true;
         }
 
         #endregion
