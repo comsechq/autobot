@@ -42,6 +42,8 @@ namespace AutoBot.Core
                 network = new SslStream(client.GetStream(), false, ValidateServerCert, null);
                 network.AuthenticateAsClient(server);
 
+                network.ReadTimeout = 60000;
+
                 receive = new StreamReader(network);
                 send = new StreamWriter(network);
 
