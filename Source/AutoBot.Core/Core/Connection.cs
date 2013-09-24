@@ -35,6 +35,9 @@ namespace AutoBot.Core
             try
             {
                 client = new TcpClient(server, port);
+                client.ReceiveTimeout = 60000;
+                client.SendTimeout = 60000;
+                client.LingerState = new LingerOption(true, 60);
 
                 network = new SslStream(client.GetStream(), false, ValidateServerCert, null);
                 network.AuthenticateAsClient(server);
@@ -46,7 +49,7 @@ namespace AutoBot.Core
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Connect Error: " + ex.Message);
+                System.Console.WriteLine("Connect Error: " + ex.Message);
 
                 return false;
             }
