@@ -1,4 +1,7 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using AutoBot.Core;
 using AutoBot.Domain;
 
@@ -9,7 +12,15 @@ namespace AutoBot.Services
     /// </summary>
     public class FileWatcherService : IFileWatcherService
     {
-        private string notificationChannel;
+        private const string FileWatcherSectionName = "watch";
+
+        /// <summary>
+        /// Gets the file watches.
+        /// </summary>
+        /// <value>
+        /// The file watches.
+        /// </value>
+        public IList<IFileWatcher> FileWatchers { get; private set; }
 
         #region Dependencies
         
@@ -29,15 +40,15 @@ namespace AutoBot.Services
         /// </value>
         public IConfigService ConfigService { get; set; }
 
-        /// <summary>
-        /// Gets or sets the file watcher.
-        /// </summary>
-        /// <value>
-        /// The file watcher.
-        /// </value>
-        public IFileWatcher FileWatcher { get; set; }
-
         #endregion
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FileWatcherService"/> class.
+        /// </summary>
+        public FileWatcherService()
+        {
+            FileWatchers = new List<IFileWatcher>();
+        }
 
         /// <summary>
         /// Initializes the service with any previous file
@@ -46,16 +57,12 @@ namespace AutoBot.Services
         /// <exception cref="System.NotImplementedException"></exception>
         public void Initialize()
         {
-            var fileName = ConfigService.GetValue("watch", "file", "");
+            var watches = ConfigService.GetValues(FileWatcherSectionName);
 
-            if (string.IsNullOrEmpty(fileName))
+            foreach (var watch in watches)
             {
-                return;
+                AddFileWatcher(watch.Key, watch.Value);
             }
-
-            notificationChannel = ConfigService.GetValue("watch", "channel", "");
-
-            Watch(fileName, notificationChannel);
         }
 
         /// <summary>
@@ -63,38 +70,84 @@ namespace AutoBot.Services
         /// </summary>
         /// <param name="fileName">Name of the file.</param>
         /// <param name="channel">The channel to display the contents of the watched file.</param>
-        public void Watch(string fileName, string channel)
+        public void AddWatch(string fileName, string channel)
         {
-            ConfigService.SetValue("watch", "file", fileName);
-            ConfigService.SetValue("watch", "channel", channel);
+            ConfigService.SetValue(FileWatcherSectionName, fileName, channel);
 
-            notificationChannel = channel;
-
-            FileWatcher.Watch(fileName);
-
-            FileWatcher.Changed += FileWatcher_Changed;
+            AddFileWatcher(fileName, channel);
         }
 
-        void FileWatcher_Changed(object sender, FileSystemEventArgs e)
+        /// <summary>
+        /// Stops watching the specified file name.
+        /// </summary>
+        /// <param name="fileName">Name of the file.</param>
+        /// <exception cref="System.NotImplementedException"></exception>
+        public void RemoveWatch(string fileName)
+        {
+            for (var i = FileWatchers.Count - 1; i >= 0; i--)
+            {
+                var match = string.Compare(fileName, FileWatchers[i].FileName, StringComparison.InvariantCultureIgnoreCase) == 0;
+
+                if (!match) continue;
+
+                FileWatchers.RemoveAt(i);
+
+                ConfigService.DeleteValue(FileWatcherSectionName, fileName);
+            }
+        }
+
+        /// <summary>
+        /// Adds the file watcher to the FileWatcher colleciton
+        /// and associates it's change event with the service.
+        /// </summary>
+        /// <param name="fileName">Name of the file.</param>
+        /// <param name="channel">The channel.</param>
+        private void AddFileWatcher(string fileName, string channel)
+        {
+            var fileWatcher = new FileWatcher(fileName, channel);
+
+            fileWatcher.Changed += FileChanged;
+
+            FileWatchers.Add(fileWatcher);
+        }
+
+        /// <summary>
+        /// Handles the Changed event of the FileWatcher control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="FileSystemEventArgs"/> instance containing the event data.</param>
+        public void FileChanged(object sender, FileSystemEventArgs e)
         {
             try
             {
-                if (!File.Exists(e.FullPath)) return;
+                var fullPath = e.FullPath;
 
-                var contents = File.ReadAllText(e.FullPath);
+                // Stip leading slash
+                if (fullPath.StartsWith("\\"))
+                {
+                    fullPath = fullPath.Substring(1);
+                }
+
+                if (!File.Exists(fullPath)) return;
+
+                var contents = File.ReadAllText(fullPath);
+
+                var notificationChannel = FileWatchers
+                    .First(w => w.FileName == fullPath)
+                    .Channel;
 
                 var message = new Message();
                 message.To = notificationChannel;
-                message.From = "#test";
+                message.From = notificationChannel;
                 message.Type = MessageType.Unknown;
                 message.UserHost = "";
 
                 ChatService.Reply(message, contents);
 
-                File.Delete(e.FullPath);
+                File.Delete(fullPath);
             }
             catch
-            {                
+            {            
             }
         }
     }

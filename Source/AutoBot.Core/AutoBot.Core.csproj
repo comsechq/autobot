@@ -58,7 +58,10 @@
     <Compile Include="Handlers\Aliases\AddAlias.cs" />
     <Compile Include="Handlers\Aliases\ListAlias.cs" />
     <Compile Include="Handlers\Aliases\RemoveAlias.cs" />
-    <Compile Include="Handlers\FileWatcher\Watch.cs" />
+    <Compile Include="Handlers\Channels\ListChannels.cs" />
+    <Compile Include="Handlers\Watches\AddWatch.cs" />
+    <Compile Include="Handlers\Watches\RemoveWatch.cs" />
+    <Compile Include="Handlers\Watches\ListWatches.cs" />
     <Compile Include="Handlers\Logging\LogSearch.cs" />
     <Compile Include="Handlers\Logging\LogTop.cs" />
     <Compile Include="Handlers\Logging\EnableLogging.cs" />
@@ -77,8 +80,8 @@
     <Compile Include="Handlers\Nicknames\AddNickname.cs" />
     <Compile Include="Handlers\Nicknames\ListNicknames.cs" />
     <Compile Include="Handlers\Nicknames\RemoveNickname.cs" />
-    <Compile Include="Handlers\Channels\LeaveChannel.cs" />
-    <Compile Include="Handlers\Channels\JoinChannel.cs" />
+    <Compile Include="Handlers\Channels\RemoveChannel.cs" />
+    <Compile Include="Handlers\Channels\AddChannel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AliasService.cs" />
     <Compile Include="Services\ConfigService.cs" />

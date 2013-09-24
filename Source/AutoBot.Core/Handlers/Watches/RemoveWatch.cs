@@ -2,27 +2,24 @@
 using AutoBot.Services;
 using Sugar.Command;
 
-namespace AutoBot.Handlers.FileWatcher
+namespace AutoBot.Handlers.Watches
 {
     /// <summary>
-    /// Tells the bot to watch a file
+    /// Tells the bot to stop watching a file
     /// </summary>
-    public class Watch : Handler<Watch.Options>
+    public class RemoveWatch : Handler<RemoveWatch.Options>
     {
         [Flag("watch")]
         public class Options
         {
             /// <summary>
-            /// Gets or sets the name.
+            /// Gets or sets the name for the file.
             /// </summary>
             /// <value>
             /// The name.
             /// </value>
-            [Parameter("watch", Required = true)]
+            [Parameter("remove", Required = true)]
             public string FileName { get; set; }
-
-            [Parameter("channel", Required = true)]
-            public string Channel { get; set; }
         }
 
         #region Dependencies
@@ -35,14 +32,6 @@ namespace AutoBot.Handlers.FileWatcher
         /// </value>
         public IFileWatcherService FileWatcherService { get; set; }
 
-        /// <summary>
-        /// Gets or sets the chat service.
-        /// </summary>
-        /// <value>
-        /// The chat service.
-        /// </value>
-        public IChatService ChatService { get; set; }
-
         #endregion
 
         /// <summary>
@@ -52,9 +41,7 @@ namespace AutoBot.Handlers.FileWatcher
         /// <param name="options">The options.</param>
         public override void Receive(Message message, Options options)
         {
-            FileWatcherService.Watch(options.FileName, options.Channel);
-
-            ChatService.ReplyFormat(message, "Watching: {0}", options.FileName);
+            FileWatcherService.RemoveWatch(options.FileName);
         }
     }
 }

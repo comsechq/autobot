@@ -2,44 +2,38 @@
 using AutoBot.Services;
 using Sugar.Command;
 
-namespace AutoBot.Handlers.Aliases
+namespace AutoBot.Handlers.Watches
 {
     /// <summary>
-    /// Adds a command alias
+    /// Tells the bot to watch a file
     /// </summary>
-    public class AddAlias : Handler<AddAlias.Options>
+    public class AddWatch : Handler<AddWatch.Options>
     {
-        [Flag("alias")]
+        [Flag("watch")]
         public class Options
         {
             /// <summary>
-            /// Gets or sets the name of the alias.
+            /// Gets or sets the name.
             /// </summary>
             /// <value>
             /// The name.
             /// </value>
-            [Parameter("name", Required = true)]
-            public string Name { get; set; }
+            [Parameter("watch", Required = true)]
+            public string FileName { get; set; }
 
-            /// <summary>
-            /// Gets or sets the value.
-            /// </summary>
-            /// <value>
-            /// The value.
-            /// </value>
-            [Parameter("value", Required = true)]
-            public string Value { get; set; }
+            [Parameter("channel", Required = true)]
+            public string Channel { get; set; }
         }
 
         #region Dependencies
-        
+
         /// <summary>
-        /// Gets or sets the alias service.
+        /// Gets or sets the file watcher service.
         /// </summary>
         /// <value>
-        /// The nickname service.
+        /// The file watcher service.
         /// </value>
-        public IAliasService AliasService { get; set; }
+        public IFileWatcherService FileWatcherService { get; set; }
 
         /// <summary>
         /// Gets or sets the chat service.
@@ -58,9 +52,9 @@ namespace AutoBot.Handlers.Aliases
         /// <param name="options">The options.</param>
         public override void Receive(Message message, Options options)
         {
-            AliasService.SetAlias(options.Name, options.Value);
+            FileWatcherService.AddWatch(options.FileName, options.Channel);
 
-            ChatService.ReplyFormat(message, "Added alias '{0}'.", options.Name);
+            ChatService.ReplyFormat(message, "Watching: {0}", options.FileName);
         }
     }
 }

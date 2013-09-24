@@ -309,7 +309,9 @@ namespace AutoBot.Core
 
             foreach (var @interface in interfaces.OrderBy(i => i.Order))
             {
-                if (@interface.Type == type && @interface.ConcreteType != null)
+                if (@interface.Type == type && 
+                    @interface.ConcreteType != null &&
+                    HasParameterlessConstructor(@interface.ConcreteType))
                 {
                     var result = CreateInstanceFromInterfaceValue(@interface);
 
@@ -382,6 +384,11 @@ namespace AutoBot.Core
 
         private object CreateInstanceFromConcrete(Type type, IList<Type> typeChain = null)
         {
+            if (!HasParameterlessConstructor(type))
+            {
+                return null;
+            }
+
             var result = Activator.CreateInstance(type);                
             
             if (typeChain == null)
@@ -405,7 +412,9 @@ namespace AutoBot.Core
                 }
 
                 // Set generic lists
-                if (propertyType.IsGenericType && propertyType.GetGenericTypeDefinition() == typeof(IList<>) && property.CanWrite)
+                if (propertyType.IsGenericType && 
+                    propertyType.GetGenericTypeDefinition() == typeof(IList<>) && 
+                    property.CanWrite)
                 {
                     // Create a generic list
                     var genericType = propertyType.GetGenericArguments()[0];
@@ -424,6 +433,11 @@ namespace AutoBot.Core
             }
 
             return result;
+        }
+
+        private bool HasParameterlessConstructor(Type type)
+        {
+            return type.GetConstructor(Type.EmptyTypes) != null;
         }
 
         /// <summary>

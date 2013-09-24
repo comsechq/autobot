@@ -1,4 +1,5 @@
-﻿using AutoBot.Domain;
+﻿using AutoBot.Core;
+using AutoBot.Domain;
 using AutoBot.Handlers;
 using Moq;
 using NUnit.Framework;
@@ -37,6 +38,23 @@ namespace AutoBot.Services
         }
 
         [Test]
+        public void TestHandleMessageWhenDirectMessage()
+        {
+            var message = new Message { To = "nick", Body = "three", Type = MessageType.PrivateMessage };
+
+            Context.Nick = "nick";
+
+            service.Handle(message);
+
+            Mock<INicknameService>()
+                .Verify(call => call.IsAddressedToMe(message), Times.Never());
+
+            Assert.IsFalse(((FakeHandler)service.Handlers[0]).Fired);
+            Assert.IsFalse(((FakeHandler)service.Handlers[1]).Fired);
+            Assert.IsTrue(((FakeHandler)service.Handlers[2]).Fired);
+        }
+
+        [Test]
         public void TestHandleMessageWhenNotAddressedToBot()
         {
             var message = new Message { Body = "four", Type = MessageType.PrivateMessage };
@@ -66,7 +84,7 @@ namespace AutoBot.Services
                 .Returns(true);
 
             Mock<IAliasService>()
-                .Setup(call => call.GetAlias("two"))
+                .Setup(call => call.FormatAlias("two", "two"))
                 .Returns("three");
 
             service.Handle(message);
@@ -94,6 +112,25 @@ namespace AutoBot.Services
             Assert.IsFalse(((FakeHandler)service.Handlers[0]).Fired);
             Assert.IsTrue(((FakeHandler)service.Handlers[1]).Fired);
             Assert.IsFalse(((FakeHandler)service.Handlers[2]).Fired);
-        }      
+        }
+
+        [Test]
+        public void TestHandleMessageWhenLoggingEnabled()
+        {
+            var message = new Message { Body = "test", Type = MessageType.PrivateMessage };
+
+            Mock<ILogService>()
+                .Setup(call => call.LoggingEnabled())
+                .Returns(true);
+
+            Mock<INicknameService>()
+                .Setup(call => call.IsAddressedToMe(message))
+                .Returns(true);
+
+            service.Handle(message);
+
+            Mock<ILogService>()
+                .Verify(call => call.Log(message));
+        }
     }
 }

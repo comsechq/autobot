@@ -2,44 +2,35 @@
 using AutoBot.Services;
 using Sugar.Command;
 
-namespace AutoBot.Handlers.Aliases
+namespace AutoBot.Handlers.Channels
 {
     /// <summary>
-    /// Adds a command alias
+    /// Removes a channel from the bot
     /// </summary>
-    public class AddAlias : Handler<AddAlias.Options>
+    public class RemoveChannel : Handler<RemoveChannel.Options>
     {
-        [Flag("alias")]
+        [Flag("channel")]
         public class Options
         {
             /// <summary>
-            /// Gets or sets the name of the alias.
+            /// Gets or sets the name.
             /// </summary>
             /// <value>
             /// The name.
             /// </value>
-            [Parameter("name", Required = true)]
-            public string Name { get; set; }
-
-            /// <summary>
-            /// Gets or sets the value.
-            /// </summary>
-            /// <value>
-            /// The value.
-            /// </value>
-            [Parameter("value", Required = true)]
-            public string Value { get; set; }
+            [Parameter("remove", Required = true)]
+            public string Channel { get; set; }
         }
 
         #region Dependencies
-        
+
         /// <summary>
-        /// Gets or sets the alias service.
+        /// Gets or sets the channel service.
         /// </summary>
         /// <value>
-        /// The nickname service.
+        /// The channel service.
         /// </value>
-        public IAliasService AliasService { get; set; }
+        public IChannelService ChannelService { get; set; }
 
         /// <summary>
         /// Gets or sets the chat service.
@@ -58,9 +49,9 @@ namespace AutoBot.Handlers.Aliases
         /// <param name="options">The options.</param>
         public override void Receive(Message message, Options options)
         {
-            AliasService.SetAlias(options.Name, options.Value);
+            ChannelService.Leave(options.Channel);
 
-            ChatService.ReplyFormat(message, "Added alias '{0}'.", options.Name);
+            ChatService.ReplyFormat(message, "Removed channel: {0}", options.Channel);
         }
     }
 }

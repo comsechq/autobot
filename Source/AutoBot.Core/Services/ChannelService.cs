@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using AutoBot.Core;
 using Sugar.Net;
 
@@ -7,23 +8,11 @@ namespace AutoBot.Services
     /// <summary>
     /// Service to manipulate channels on the channels on the IRC server.
     /// </summary>
-    public class ChannelService : IChannelService 
+    public class ChannelService : IChannelService
     {
-        /// <summary>
-        /// Gets or sets the HTTP service.
-        /// </summary>
-        /// <value>
-        /// The HTTP service.
-        /// </value>
-        public IHttpService HttpService { get; set; }
+        private const string ChannelSectionName = "Channels";
 
-        /// <summary>
-        /// Gets or sets the credential service.
-        /// </summary>
-        /// <value>
-        /// The credential service.
-        /// </value>
-        public ICredentialService CredentialService { get; set; }
+        #region Dependencies
 
         /// <summary>
         /// Gets or sets the config service.
@@ -49,17 +38,17 @@ namespace AutoBot.Services
         /// </value>
         public IConsole Console { get; set; }
 
+        #endregion
+
         /// <summary>
         /// Gets all the channels.
         /// </summary>
         /// <returns></returns>
         public IList<string> List()
         {
-            var channels = new List<string>();
+            var channels = ConfigService.GetValues(ChannelSectionName);
 
-           
-
-            return channels;
+            return channels.Select(c => c.Key).ToList();
         }
 
         /// <summary>
@@ -73,11 +62,7 @@ namespace AutoBot.Services
 
             if (joined)
             {
-                var config = ConfigService.GetConfig();
-
-                config.SetValue("Channels", name, string.Empty);
-
-                ConfigService.SetConfig(config);
+                ConfigService.SetValue(ChannelSectionName, name, string.Empty);
             }
          
             return joined;
@@ -92,14 +77,7 @@ namespace AutoBot.Services
         {
             var left = ChatService.Leave(name);
 
-            if (left)
-            {
-                var config = ConfigService.GetConfig();
-
-                config.Delete("Channels", name);
-
-                ConfigService.SetConfig(config);
-            }
+            ConfigService.DeleteValue(ChannelSectionName, name);
 
             return left;
         }
@@ -114,18 +92,14 @@ namespace AutoBot.Services
                 return;                
             }
 
-            var config = ConfigService.GetConfig();
+            var channels = ConfigService.GetValues(ChannelSectionName);
 
-            var lines = config.GetSection("Channels");
-
-            foreach (var line in lines)
+            foreach (var channel in channels)
             {
-                Console.WriteLine("Attempting to rejoin channel {0}", line.Key);
+                Console.WriteLine("Rejoining: {0}", channel.Key);
 
-                ChatService.Join(line.Key);
+                ChatService.Join(channel.Key);
             }
-
-            ConfigService.SetConfig(config);
         }
     }
 }

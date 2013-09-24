@@ -1,11 +1,42 @@
 ﻿I understand the following commands:
-  - cpu
-  - dir
-  - echo
-  - exec
-  - exit
-  - hello
-  - ps
-  - tail
-  - version
-Type "help [command]" for help on each command.
+alias, channel, cpu, dir, echo, exec, exit, hello, nick, ps, tail, version
+Type "help [command]" for more help on each command.
+:alias
+Allows setting of aliases to the bot
+- alias add name [name] value [command]
+- alias remove [name]
+- alias list
+:channel
+Tells the bot to join and leave IRC channels
+- channel add [name]
+- channel remove [name]
+- channel list
+:cpu
+Reads the CPU load on the server.  You can optionally specify the number of samples
+to take, and the bot will calculate the average load
+- cpu [number of samples]
+:dir
+Lists the contents of a directory on the server.
+- dir [path] (pattern [filespec]) (bare)
+:echo
+Echoes a message to the current IRC channel
+:exit
+Exits the bot
+:hello
+Says hello
+:nick
+Assigns the bot nick names.  This allows you to address the bot in a channel.
+The bot will always respond to private messages.
+- nick add [name]
+- nick remove [name]
+- nick list
+:ps
+Lists the running processes on the server.  Optionally only show processes
+containing a specified pattern.
+- ps [pattern]
+:tail
+Tails the contents of a file on the server.  Defaults to the last 10 lines in the file.  
+Optionally you can specify a search pattern.a
+- tail [file] lines [number of lines to read] pattern [search pattern]
+:version
+Displays the current version of the bot

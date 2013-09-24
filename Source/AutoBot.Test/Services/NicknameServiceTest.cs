@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using AutoBot.Domain;
+using Moq;
 using NUnit.Framework;
 using Sugar.Configuration;
 
@@ -51,8 +52,7 @@ namespace AutoBot.Services
             Assert.AreEqual("alice", section[0].Key);
         }
 
-        [Test]
-        public void TestListNicknames()
+        private void ExpectCallToGetConfiguration()
         {
             var config = new Config();
             config.SetValue("Nicknames", "bob", string.Empty);
@@ -61,12 +61,58 @@ namespace AutoBot.Services
             Mock<IConfigService>()
                 .Setup(call => call.GetConfig())
                 .Returns(config);
+        }
+
+        [Test]
+        public void TestListNicknames()
+        {
+            ExpectCallToGetConfiguration();
 
             var results = service.List();
 
             Assert.AreEqual(2, results.Count);
             Assert.AreEqual("bob", results[0]);
             Assert.AreEqual("alice", results[1]);
+        }
+
+        [Test]
+        public void TestMessageIsAddressedToMe()
+        {
+            ExpectCallToGetConfiguration();
+
+            var message = new Message();
+            message.Body = "bob hello";
+
+            var result = service.IsAddressedToMe(message);
+
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void TestMessageIsNotAddressedToMe()
+        {
+            ExpectCallToGetConfiguration();
+
+            var message = new Message();
+            message.Body = "charlie hello";
+
+            var result = service.IsAddressedToMe(message);
+
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void TestMessageIsAddressedToMeIgnoresBlankMessages()
+        {
+            var message = new Message();
+            message.Body = "";
+
+            var result = service.IsAddressedToMe(message);
+
+            Assert.IsFalse(result);
+
+            Mock<IConfigService>()
+                .Verify(call => call.GetConfig(), Times.Never());
         }
     }
 }

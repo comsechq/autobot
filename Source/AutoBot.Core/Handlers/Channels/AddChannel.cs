@@ -5,20 +5,20 @@ using Sugar.Command;
 namespace AutoBot.Handlers.Channels
 {
     /// <summary>
-    /// Adds a nickname to this bot
+    /// Tells the Bot to join a Channel
     /// </summary>
-    public class LeaveChannel : Handler<LeaveChannel.Options>
+    public class AddChannel : Handler<AddChannel.Options>
     {
         [Flag("channel")]
         public class Options
         {
             /// <summary>
-            /// Gets or sets the name.
+            /// Gets or sets the name of the channel to add to the bot.
             /// </summary>
             /// <value>
             /// The name.
             /// </value>
-            [Parameter("leave", Required = true)]
+            [Parameter("add", Required = true)]
             public string Channel { get; set; }
         }
 
@@ -49,9 +49,9 @@ namespace AutoBot.Handlers.Channels
         /// <param name="options">The options.</param>
         public override void Receive(Message message, Options options)
         {
-            ChannelService.Leave(options.Channel);
+            ChannelService.Join(options.Channel);
 
-            ChatService.ReplyFormat(message, "Leaving channel '{0}'.", options.Channel);
+            ChatService.ReplyFormat(message, "Added channel: {0}", options.Channel);
         }
     }
 }

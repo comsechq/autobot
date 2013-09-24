@@ -118,5 +118,56 @@ namespace AutoBot.Services
 
             Assert.IsTrue(result);
         }
+
+        [Test]
+        public void TestValidateCredentialsNoServer()
+        {
+            var credentials = new Credentials
+            {
+                Server = "",
+                Port = 6667,
+                Password = "password",
+                Nick = "nick",
+                Name = "name"
+            };
+
+            var result = service.Validate(credentials);
+
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void TestValidateCredentialsNoPort()
+        {
+            var credentials = new Credentials
+            {
+                Server = "example.com",
+                Port = 0,
+                Password = "password",
+                Nick = "nick",
+                Name = "name"
+            };
+
+            var result = service.Validate(credentials);
+
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void TestValidateCredentialsNoNick()
+        {
+            var credentials = new Credentials
+            {
+                Server = "example.com",
+                Port = 6667,
+                Password = "password",
+                Nick = "",
+                Name = "name"
+            };
+
+            var result = service.Validate(credentials);
+
+            Assert.IsFalse(result);
+        }
     }
 }

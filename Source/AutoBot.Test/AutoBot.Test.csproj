@@ -53,21 +53,46 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\FakeMessageParserLink.cs" />
+    <Compile Include="Core\FileWatcherTest.cs" />
+    <Compile Include="Core\MessageParserLinks\SetModeLinkTest.cs" />
     <Compile Include="Core\MessageParserLinks\PrivateMessageLinkTest.cs" />
     <Compile Include="Core\MessageParserLinks\PingLinkTest.cs" />
     <Compile Include="Core\MessageParserTest.cs" />
+    <Compile Include="Core\Samples\Bar.cs" />
+    <Compile Include="Core\Samples\Baz.cs" />
+    <Compile Include="Core\Samples\Buzz.cs" />
+    <Compile Include="Core\Samples\Concrete.cs" />
+    <Compile Include="Core\Samples\Fizz.cs" />
+    <Compile Include="Core\Samples\FizzBuzz.cs" />
+    <Compile Include="Core\Samples\Foo.cs" />
+    <Compile Include="Core\Samples\IBar.cs" />
+    <Compile Include="Core\Samples\IBaz.cs" />
+    <Compile Include="Core\Samples\IFizzBuzz.cs" />
+    <Compile Include="Core\Samples\IFoo.cs" />
+    <Compile Include="Core\StencilTest.cs" />
     <Compile Include="FakeHttpResponse.cs" />
     <Compile Include="Handlers\Aliases\AddAliasTest.cs" />
     <Compile Include="Handlers\Aliases\RemoveAliasTest.cs" />
+    <Compile Include="Handlers\Channels\AddChannelTest.cs" />
+    <Compile Include="Handlers\Channels\ListChannelsTest.cs" />
+    <Compile Include="Handlers\Channels\RemoveChannelTest.cs" />
     <Compile Include="Handlers\FakeHandler.cs" />
     <Compile Include="Handlers\Nicknames\AddNicknameTest.cs" />
     <Compile Include="Handlers\Nicknames\RemoveNicknameTest.cs" />
+    <Compile Include="Handlers\System\HelpTest.cs" />
+    <Compile Include="Handlers\Watches\AddWatchTest.cs" />
+    <Compile Include="Handlers\Watches\RemoveWatchTest.cs" />
+    <Compile Include="Handlers\Watches\ListWatchesTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AliasServiceTest.cs" />
+    <Compile Include="Services\ConfigServiceTest.cs" />
+    <Compile Include="Services\FileLogServiceTest.cs" />
+    <Compile Include="Services\FileWatcherServiceTest.cs" />
     <Compile Include="Services\HandlerServiceTest.cs" />
-    <Compile Include="Services\RoomServiceTest.cs" />
+    <Compile Include="Services\ChannelServiceTest.cs" />
     <Compile Include="Services\CredentialServiceTest.cs" />
     <Compile Include="Services\NicknameServiceTest.cs" />
+    <Compile Include="Services\StubConfigService.cs" />
     <Compile Include="Services\UpdateServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -88,6 +113,7 @@
       <Name>AutoBot</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -2,35 +2,27 @@
 using AutoBot.Services;
 using Sugar.Command;
 
-namespace AutoBot.Handlers.Channels
+namespace AutoBot.Handlers.Watches
 {
     /// <summary>
-    /// Adds a nickname to this bot
+    /// Lists all the files the bot is watching
     /// </summary>
-    public class JoinChannel : Handler<JoinChannel.Options>
+    public class ListWatches : Handler<ListWatches.Options>
     {
-        [Flag("channel")]
+        [Flag("watch", "list")]
         public class Options
         {
-            /// <summary>
-            /// Gets or sets the name.
-            /// </summary>
-            /// <value>
-            /// The name.
-            /// </value>
-            [Parameter("join", Required = true)]
-            public string Channel { get; set; }
         }
 
         #region Dependencies
 
         /// <summary>
-        /// Gets or sets the channel service.
+        /// Gets or sets the file watcher service.
         /// </summary>
         /// <value>
-        /// The channel service.
+        /// The file watcher service.
         /// </value>
-        public IChannelService ChannelService { get; set; }
+        public IFileWatcherService FileWatcherService { get; set; }
 
         /// <summary>
         /// Gets or sets the chat service.
@@ -49,9 +41,10 @@ namespace AutoBot.Handlers.Channels
         /// <param name="options">The options.</param>
         public override void Receive(Message message, Options options)
         {
-            ChannelService.Join(options.Channel);
-
-            ChatService.ReplyFormat(message, "Joined channel '{0}'.", options.Channel);
+            foreach (var watcher in FileWatcherService.FileWatchers)
+            {
+                ChatService.Reply(message, watcher.FileName);
+            }
         }
     }
 }

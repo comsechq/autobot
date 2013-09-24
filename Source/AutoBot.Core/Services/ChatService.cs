@@ -171,6 +171,12 @@ namespace AutoBot.Services
                 return;
             }
 
+            // Check login credentials have been set
+            if (loginCredentials == null)
+            {
+                return;
+            }
+
             lastLoginAttempt = DateTime.Now;
 
             Console.WriteLine("Attempting to connect to: {0}", loginCredentials.Server);

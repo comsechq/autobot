@@ -8,10 +8,20 @@ namespace AutoBot.Core
     public interface IFileWatcher
     {
         /// <summary>
-        /// Watches the specified file name.
+        /// Gets the name of the file to watch.
         /// </summary>
-        /// <param name="fileName">Name of the file.</param>
-        void Watch(string fileName);
+        /// <value>
+        /// The name of the file.
+        /// </value>
+        string FileName { get; }
+
+        /// <summary>
+        /// Gets the IRC channel to log contents of the file to.
+        /// </summary>
+        /// <value>
+        /// The channel.
+        /// </value>
+        string Channel { get; }
 
         /// <summary>
         /// Occurs when the watched file changes.

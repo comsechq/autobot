@@ -23,7 +23,12 @@ namespace AutoBot.Services
 
         #endregion
 
-        private string GetLogFileName(DateTime dateTime)
+        /// <summary>
+        /// Gets the name of the log file.
+        /// </summary>
+        /// <param name="dateTime">The date time.</param>
+        /// <returns></returns>
+        public string GetLogFileName(DateTime dateTime)
         {
             var rootPath = ConfigService.GetValue("logging", "path", "C:\\logs");
             var datePath = string.Format("{0:yyyy}\\{0:MM}\\{0:dd}", dateTime);

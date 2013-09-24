@@ -1,4 +1,6 @@
-﻿using Sugar.Configuration;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Sugar.Configuration;
 
 namespace AutoBot.Services
 {
@@ -29,11 +31,25 @@ namespace AutoBot.Services
         string GetValue(string section, string key, string @default);
 
         /// <summary>
+        /// Gets all the values from a config section.
+        /// </summary>
+        /// <param name="section">The section.</param>
+        /// <returns></returns>
+        IList<ConfigLine> GetValues(string section);
+
+        /// <summary>
         /// Sets the value with the given key in the configuration.
         /// </summary>
         /// <param name="section">The section.</param>
         /// <param name="key">The key.</param>
         /// <param name="value">The value.</param>
         void SetValue(string section, string key, object value);
+
+        /// <summary>
+        /// Deletes the value with the given key.
+        /// </summary>
+        /// <param name="section">The section.</param>
+        /// <param name="key">The key.</param>
+        void DeleteValue(string section, string key);
     }
 }
