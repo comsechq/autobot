@@ -56,11 +56,13 @@ namespace AutoBot.Services
 
             var lastPongSeconds = (DateTime.Now - lastPong).TotalSeconds;
 
-            if (lastPongSeconds > 300)
+            if (lastPongSeconds > 180)
             {
                 Console.WriteLine("Lost connection to server, logging in again...");
 
                 LoggedIn = false;
+
+                AttemptLogin(false);
             }
             else
             {
@@ -98,17 +100,9 @@ namespace AutoBot.Services
                 {
                     Thread.Sleep(1000);
 
-                    AttemptLogin();
+                    AttemptLogin(true);
 
                     continue;
-                }
-
-                // Check PING / PONG
-                if (!CheckPingPong())
-                {
-                    Console.WriteLine("PING/PONG Timeout, logging in again.");
-
-                    continue;                    
                 }
 
                 string data;
@@ -155,15 +149,6 @@ namespace AutoBot.Services
             }
         }
 
-        /// <summary>
-        /// Checks a ping/pong handshake has occured within the last 5 mintues.
-        /// </summary>
-        /// <returns></returns>
-        private bool CheckPingPong()
-        {
-            return true;
-        }
-
         #endregion
 
         /// <summary>
@@ -201,12 +186,15 @@ namespace AutoBot.Services
         /// Attempts to login to the server.
         /// </summary>
         /// <exception cref="System.NotImplementedException"></exception>
-        private void AttemptLogin()
+        private void AttemptLogin(bool checkTime)
         {
             // Only Attempt to login every 60 seconds
-            if ((DateTime.Now - lastLoginAttempt).TotalSeconds < 60)
+            if (checkTime)
             {
-                return;
+                if ((DateTime.Now - lastLoginAttempt).TotalSeconds < 60)
+                {
+                    return;
+                }
             }
 
             // Check login credentials have been set

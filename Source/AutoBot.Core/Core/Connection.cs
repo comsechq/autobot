@@ -44,8 +44,10 @@ namespace AutoBot.Core
 
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine("Connect Error: " + ex.Message);
+
                 return false;
             }
         }
