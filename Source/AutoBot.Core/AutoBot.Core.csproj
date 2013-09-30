@@ -31,7 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Sugar">
       <HintPath>..\..\References\Sugar\Sugar.dll</HintPath>
     </Reference>
