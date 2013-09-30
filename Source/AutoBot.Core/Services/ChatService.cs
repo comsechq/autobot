@@ -13,7 +13,7 @@ namespace AutoBot.Services
     /// </summary>
     public class ChatService : IChatService
     {
-        private readonly IConnection connection;
+        private IConnection connection;
         private Credentials loginCredentials;
         private DateTime lastPong;
         private DateTime lastLoginAttempt;
@@ -62,11 +62,16 @@ namespace AutoBot.Services
 
                 LoggedIn = false;
 
+                connection.Dispose();
+                connection = new Connection();
+
                 AttemptLogin(false);
             }
             else
             {
                 Console.WriteLine("Last PONG: {0:0} secs.", lastPongSeconds);
+
+                connection.GetSocketStatus();
             }
         }
 
@@ -113,7 +118,10 @@ namespace AutoBot.Services
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Receive Error: " + ex.Message);
+                    Console.WriteLine(ex.GetType() + ": " + ex.Message);
+
+                    connection.Dispose();
+                    connection = new Connection();
 
                     LoggedIn = false;
 

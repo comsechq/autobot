@@ -33,5 +33,7 @@ namespace AutoBot
         /// </summary>
         /// <returns></returns>
         string Receive();
+
+        void GetSocketStatus();
     }
 }

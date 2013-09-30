@@ -2,6 +2,7 @@
 using System.Net.Security;
 using System.Net.Sockets;
 using System.IO;
+using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 
 namespace AutoBot.Core
@@ -35,7 +36,7 @@ namespace AutoBot.Core
             try
             {
                 client = new TcpClient(server, port);
-                network = new SslStream(client.GetStream(), false, ValidateServerCert, null);
+                network = new SslStream(client.GetStream(), false, ValidateServerCert, null, EncryptionPolicy.RequireEncryption);
                 network.AuthenticateAsClient(server);
 
                 receive = new StreamReader(network);
@@ -52,6 +53,23 @@ namespace AutoBot.Core
             }
         }
 
+        public void GetSocketStatus()
+        {
+            var s = client.Client;
+
+            bool part1 = s.Poll(1000, SelectMode.SelectRead);
+            bool part2 = (s.Available == 0);
+
+            if (part1 & part2)
+            {
+                System.Console.WriteLine("Socket Disconnected");
+            }
+            else
+            {
+                System.Console.WriteLine("Socket Connected");
+            }
+        }
+
         /// <summary>
         /// Validates the server certificate.
         /// </summary>
@@ -62,6 +80,12 @@ namespace AutoBot.Core
         /// <returns></returns>
         private bool ValidateServerCert(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors)
         {
+
+            if (sslpolicyerrors != SslPolicyErrors.None)
+            {
+                System.Console.WriteLine("SSL Cert Error: " + sslpolicyerrors);
+            }
+
             // Allow any certificate
             // TODO: Make the user force the use of self signed certificates
             return true;
