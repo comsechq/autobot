@@ -45,7 +45,8 @@ namespace AutoBot.Core
             }
             catch (Exception ex)
             {
-                System.Console.WriteLine("Connect Error: " + ex.Message);
+                System.Console.WriteLine(ex.GetType() + ": " + ex.Message);
+                System.Console.WriteLine(ex.StackTrace);
 
                 return false;
             }
@@ -72,10 +73,20 @@ namespace AutoBot.Core
         /// <param name="data">The data.</param>
         public void Send(string data)
         {
-            System.Console.WriteLine("<< " + data);
+            try
+            {
+                System.Console.WriteLine("<< " + data);
 
-            send.WriteLine(data);
-            send.Flush();
+
+
+                send.WriteLine(data);
+                send.Flush();
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine(ex.GetType() + ": " + ex.Message);
+                System.Console.WriteLine(ex.StackTrace);
+            }
         }
 
         /// <summary>
@@ -94,7 +105,17 @@ namespace AutoBot.Core
         /// <returns></returns>
         public string Receive()
         {
-            return receive.ReadLine();
+            try
+            {
+                return receive.ReadLine();
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine(ex.GetType() + ": " + ex.Message);
+                System.Console.WriteLine(ex.StackTrace);
+
+                return string.Empty;
+            }
         }
 
         /// <summary>
